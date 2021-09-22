@@ -165,7 +165,21 @@ tibble(
 #' This now looks like the proposed extra SCC that is incurred due to mastitis.
 #'
 
-gammainc <- expint::gammainc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# gammainc <- expint::gammainc
 
 #
 # readr::read_table(
