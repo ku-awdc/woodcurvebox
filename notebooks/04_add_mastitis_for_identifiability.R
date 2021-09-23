@@ -12,6 +12,7 @@ devtools::load_all()
 #' There are many things we could control for:
 #'
 #' - Severity of the mastitis (10k - 40k in the mode)
+#'   According to Maya, the range should more be (40k - 200k in the mode)
 #' - Proportion of infected dairy cows in the herd.
 #' - Number of samples from the given lactation period.
 #' - Number of samples from the "three" phases of the lactation period.
@@ -41,48 +42,9 @@ lactation_phases <- function(peak_location) {
 # 5 = (shape-1)*scale
 # 0 = qgamma(p = 0.95, shape = shape, scale = scale)
 
-#' Title
-#'
-#' @param par
-#'
-#' @return
-#' @export
-#'
-#' @note The `mode` in the output should be the same as the target
-#' mode provided.
-#'
-#' @examples
-find_mastititis_shapes <- function(par = c(1,1)) {
-
-  optim(par = par,
-        function(x) {
-
-          if (any(x < 0)) {
-            Inf
-          }
-
-          shape <- x[1]
-          scale <- x[2]
-          # replace shape by constrain that the mode is at 5 (i.e. `target_mode`)
-          better_shape <- 5 / scale + 1
-
-          # multiplication to bring the terms into the same level
-
-          shape * pgamma(21, shape = shape, scale = scale,
-                         lower.tail = FALSE) +
-            abs(shape - better_shape) * scale +
-            # mean(abs(1 - pgamma(21, shape = shape, scale = scale))) +
-            0
-        }) %>%
-    `[[`("par") ->
-    mastitis_shape_par
-  shape <- mastitis_shape_par[1]
-  scale <- mastitis_shape_par[2]
-  list(shape = shape, scale = scale,
-       mode = (shape - 1)*scale)
-}
-
 #TODO: Try with different starting points and examine the resulting curves.
+
+find_mastititis_shapes
 
 mastitis_shape_par <-
   find_mastititis_shapes()
@@ -98,47 +60,7 @@ curve(dgamma(x, shape = shape, scale = scale), xlim = c(0, 21))
 # curve(pgamma(x, shape = shape, scale = scale, lower.tail = FALSE),
 #       # xlim = c(0, 21))
 #       xlim = c(0, 50))
-
-#' Title
-#'
-#' @param severity_scale Between `c(0, 1)`
-#' @param mastitis_shape_par
-#' @param n
-#' @param x
-#'
-#' @return
-#' @export
-#'
-#' @examples
-mastitis_shape <- function(
-  severity_scale,
-  n = 100,
-  x = NULL,
-  mastitis_shape_par = mastitis_shape_par) {
-  # assume `x` is within 0 and 21
-
-  x <- if (is.null(x)) {
-    seq.default(0, 21, length.out = n)
-  } else {
-    x
-  }
-
-  shape <- mastitis_shape_par$shape
-  scale <- mastitis_shape_par$scale
-  shape_value <- dgamma(x, shape = shape, scale = scale) /
-    dgamma(5, shape = shape, scale = scale)
-
-  list(
-    # severity_scale = severity_scale,
-    x = x,
-    # mastitis_shape = shape_value,
-    y = (1 - severity_scale) * 10 * shape_value +
-      severity_scale * 40 * shape_value
-  )
-}
-# NOT POSSIBLE WITH LIST AS OUTPUT
-# mastitis_shape <- Vectorize(mastitis_shape,
-#                             vectorize.args = "severity_scale")
+mastitis_shape
 
 
 tibble(
@@ -165,7 +87,10 @@ tibble(
 #' This now looks like the proposed extra SCC that is incurred due to mastitis.
 #'
 
-gammainc <- expint::gammainc
+
+
+
+# gammainc <- expint:gammainc
 
 #
 # readr::read_table(

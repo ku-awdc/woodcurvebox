@@ -131,7 +131,7 @@ tibble(
                n = 60),
   #' SCHEDULED
   dim_sample = map(start_date, . %>%
-                     seq.default(from = ., to = 305,
+                     seq.default(from = .x, to = 305,
                                  length.out = samples_per_cow) %>%
                      round() %>%
                      trunc() %>%
