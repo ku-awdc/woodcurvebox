@@ -19,21 +19,22 @@ sample_scc_curves <- function(parameters_df, herd_size) {
                                     # a = 0,
                                     # b = 0,
                                     mean = .$a,
-                                    sd = 1),
+                                    sd = 25),
           b = truncnorm::rtruncnorm(
             .$herd_size,
             # a = 0,
             # a = 0.01,
             b = 0,
             mean = .$b,
+            sd = 0.0001
             # sd = 0.1
             # sd = 0.04
-            sd = 0.2
+            # sd = 0.2
           ),
           c = truncnorm::rtruncnorm(
             .$herd_size,
             # a = .$c,
-            a = -1,
+            # a = -1,
             b = 0,
             mean = .$c,
             sd = 0.00001
