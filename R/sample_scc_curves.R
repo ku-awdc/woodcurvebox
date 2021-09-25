@@ -24,6 +24,7 @@ sample_scc_curves <- function(parameters_df, herd_size) {
             .$herd_size,
             # a = 0,
             # a = 0.01,
+            a = -1, # otherwise the curve is not integrable.
             b = 0,
             mean = .$b,
             sd = 0.0001
