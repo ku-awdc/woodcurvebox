@@ -4,7 +4,7 @@
 #' Simulate a herd consisting of 50 cows, over a "first" lactation.
 #' Then see if one can retrieve that information back
 #'
-source("../asf_phd/R/eda_startup.r")
+source("notebooks/eda_startup.r")
 library(truncnorm)
 devtools::load_all()
 

@@ -1,7 +1,7 @@
 #'
 #'
 
-source("../asf_phd/R/eda_startup.r")
+source("notebooks/eda_startup.r")
 # library(truncnorm)
 devtools::load_all()
 

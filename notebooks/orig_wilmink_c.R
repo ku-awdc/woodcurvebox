@@ -1,5 +1,5 @@
 
-source("../asf_phd/R/eda_startup.r")
+source("notebooks/eda_startup.r")
 #'
 peak_loc <- 50
 peak_value <- 60

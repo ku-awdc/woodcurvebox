@@ -1,6 +1,8 @@
 #' ---
 #' ---
 #'
+#'
+source("notebooks/eda_startup.r")
 
 #' Flipping the milk curve around the peak value $y = c = \texttt{peak value}$ and
 #' such is by $2c - f(x)$.
