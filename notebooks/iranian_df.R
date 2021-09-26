@@ -1,7 +1,7 @@
 #'
 #'
 #'
-source("../asf_phd/r/eda_startup.r")
+source("notebooks/eda_startup.r")
 #'
 library(tidylog)
 library(haven)

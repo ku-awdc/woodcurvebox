@@ -1,6 +1,6 @@
 #'
 #'
-source("../asf_phd/R/eda_startup.r")
+source("notebooks/eda_startup.r")
 #'
 #' Source: [Link](https://www.mdpi.com/2076-2615/11/6/1637#supplementary)
 #'

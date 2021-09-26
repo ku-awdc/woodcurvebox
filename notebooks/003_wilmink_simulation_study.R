@@ -4,7 +4,7 @@
 #' Simulate a herd consisting of 50 cows, over a "first" lactation.
 #' Then see if one can retrieve that information back
 #'
-source("../asf_phd/R/eda_startup.r")
+source("notebooks/eda_startup.r")
 library(truncnorm)
 devtools::load_all()
 
@@ -131,7 +131,7 @@ tibble(
                n = 60),
   #' SCHEDULED
   dim_sample = map(start_date, . %>%
-                     seq.default(from = ., to = 305,
+                     seq.default(from = .x, to = 305,
                                  length.out = samples_per_cow) %>%
                      round() %>%
                      trunc() %>%
