@@ -257,6 +257,12 @@ entire_herd_scc_parameters %>%
   entire_herd_scc_curves
 #'
 #'
+
+#' Note that this might be useful to save, as it may be helpful to explore
+#' other parameter estimation methods, e.g. see "009_epxlore_saemix_alternative.R"
+#'
+use_data(entire_herd_scc_curves)
+#'
 #'
 entire_herd_scc_curves %>%
   unnest(c(x,y)) %>%
