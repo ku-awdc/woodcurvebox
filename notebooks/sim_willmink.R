@@ -1,5 +1,5 @@
 #' ---
-#'
+#' subtitle: First attempt at the Wood's Curve estimation
 #' output: html_document
 #' ---
 
