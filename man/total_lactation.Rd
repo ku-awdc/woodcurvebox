@@ -7,7 +7,7 @@
 From \href{https://www.nature.com/articles/216164a0.pdf}{Algebraic Model of the Lactation Curve in Cattle}
 }
 \usage{
-total_lactation(a, b, c)
+total_lactation(a, b, c, T = 305)
 }
 \arguments{
 \item{a, b, c}{}
