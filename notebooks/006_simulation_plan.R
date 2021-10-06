@@ -603,16 +603,25 @@ full_fitted_herd_df %>%
   full_fitted_herd_error_df
 #'
 full_fitted_herd_error_df %>%
+
+  filter(infection_phase %in% c("early", "late", NA)) %>%
   glimpse() %>%
+
+  pivot_longer(cols = c(mae, mse), names_to = "error_type", values_to = "error_value") %>%
+
+  # select((where(~!is.list(.x) | length(.x) == 1))) %>% View()
+
   print(n = 25, width = Inf) %>% {
     ggplot(.) +
-      aes(mae, groups = is_infected, color = is_infected) +
+      # aes(mae, groups = is_infected, color = is_infected) +
+      aes(error_value, groups = interaction(error_type, is_infected, infection_phase),
+          color = interaction(is_infected, infection_phase)) +
       stat_ecdf() +
       # facet_wrap(~is_infected) +
 
-      scale_color_manual(values = c("TRUE" = "red", "FALSE" = "green")) +
+      # scale_color_manual(values = c("TRUE" = "red", "FALSE" = "green")) +
 
-      facet_wrap(~infection_phase) +
+      facet_wrap(~error_type, scales = "free_x") +
       NULL
   }
 #'
