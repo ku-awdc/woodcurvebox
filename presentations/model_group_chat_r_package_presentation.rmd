@@ -1,0 +1,55 @@
+---
+title: "Model Group Chat R package"
+author: "Maj Beldring"
+date: "4/8/2022"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    # seal: false
+    css: [default, metropolis, metropolis-fonts]
+    # css: [default, hygge-duke, metropolis-fonts]
+    # css: [default, hygge-duke, metropolis-fonts]
+    yolo: false
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction to R-packages
+
+Let's start with the why:
+
+- Order in script-chaos
+- Reproducible research
+- Facilitates collaborations with others
+- Matt & Mossa said it was a good idea
+
+---
+
+# What does it entails?
+
+You have to...
+
+- Adhere to a very specific file structure
+- Tolerate start-up friction
+- Enjoy the benefits of never having to ...
+
+
+---
+
+# Get started
+
+- Github
+- Create a directory, and name it what you would name the package!
+- Create functions in `R/` directory only.
+- Create Vignette!
+
+Of course, Vignettes are for the end.
+
+For now, we make *scripts* and those we store in `notebooks/` folder.
+
+
