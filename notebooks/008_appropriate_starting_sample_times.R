@@ -1,6 +1,3 @@
-
-
-
 #'
 #'
 #'
@@ -39,15 +36,17 @@ ns <- ns %>% floor()
 #'
 #' @examples
 starting_time <- function(n, size = 1) {
-  sample.int(size = size, n = round(2.5 * n))
+  sample.int(size = size, n = round(1.5 * n))
 }
 
 
 
 #'  Let us look at the entire space
-tibble(ns) %>%
+# tibble(ns) %>%
+tibble(ns = 30) %>%
+  #' all possible starting times
   mutate(starting_time = ns %>%
-           map(~seq.default(from = 1, to = round(2.5 * .x)))) %>%
+           map(~seq.default(from = 1, to = round(1.1 * .x)))) %>%
   unnest(starting_time) %>%
   arrange(n = ns, starting_time) %>%
 
@@ -57,7 +56,7 @@ tibble(ns) %>%
                                  to = max_days_in_milk, by = .y)),
          number_of_samples = sampling_times %>% lengths()) %>%
 
-  # View() %>%
+  View() %>%
   identity()
 #'
 #' There is *no way* to reasonable make this a 6-point scheme.
