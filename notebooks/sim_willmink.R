@@ -5,6 +5,8 @@
 #'
 source("notebooks/eda_startup.r")
 devtools::load_all(path = ".")
+#TODO: This is outdated as `f_wilmink` has been changed, etc.
+#'
 #'
 #' Original Lactation curves per herd
 #'

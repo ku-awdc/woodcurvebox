@@ -10,6 +10,3 @@ devtools::load_all(path = ".")
 f_wilmink
 #'
 #'
-logf_wilmink <- function(a,b,c,d,DIM) {
-  a+b*DIM+
-}

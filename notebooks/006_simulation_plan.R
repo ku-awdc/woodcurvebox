@@ -18,7 +18,7 @@ devtools::load_all()
 #' Note we only examine cows in the *first* lactation
 set.seed(20212409)
 # herd_size <- 95
-herd_size <- 800
+herd_size <- 300
 # herd_size <- 200
 # proportion_of_sick_cattle <- 0.50
 proportion_of_sick_cattle <- 0.25
@@ -290,7 +290,7 @@ entire_herd_scc_curves
 #' Note that this might be useful to save, as it may be helpful to explore
 #' other parameter estimation methods, e.g. see "009_epxlore_saemix_alternative.R"
 #'
-use_data(entire_herd_scc_curves)
+usethis::use_data(entire_herd_scc_curves, overwrite = TRUE)
 #'
 #'
 entire_herd_scc_curves %>%
@@ -599,7 +599,35 @@ full_fitted_herd_df %>%
     mse = mean((y_without_scc[[1]] - y_est[[1]])**2),
     mae = mean(abs(y_without_scc[[1]] - y_est[[1]]))
   ) %>%
-  # mutate(infection_phase = fct_inorder(infection_phase)) %>%
+  ungroup() ->
+  full_fitted_herd_error_df
+#'
+full_fitted_herd_error_df %>%
+
+  filter(infection_phase %in% c("early", "late", NA)) %>%
+  glimpse() %>%
+
+  pivot_longer(cols = c(mae, mse), names_to = "error_type", values_to = "error_value") %>%
+
+  # select((where(~!is.list(.x) | length(.x) == 1))) %>% View()
+
+  print(n = 25, width = Inf) %>% {
+    ggplot(.) +
+      # aes(mae, groups = is_infected, color = is_infected) +
+      aes(error_value, groups = interaction(error_type, is_infected, infection_phase),
+          color = interaction(is_infected, infection_phase)) +
+      stat_ecdf() +
+      # facet_wrap(~is_infected) +
+
+      # scale_color_manual(values = c("TRUE" = "red", "FALSE" = "green")) +
+
+      facet_wrap(~error_type, scales = "free_x") +
+      NULL
+  }
+#'
+#'
+#'
+full_fitted_herd_error_df %>%
   pivot_longer(c(mse, mae),
     names_to = "accum_error_label",
     values_to = "accum_error"
@@ -621,115 +649,5 @@ full_fitted_herd_df %>%
 #' is fine.
 #'
 #'
-#'
-#' #'
-#' #'
-#' future::plan(future::multisession, workers = 4)
-#' # lapply(c(5, 10, 20, 50, 100), function(n) {
-#' furrr::future_map(
-#'   .progress = TRUE,
-#'   # .options = furrr_options(),
-#'   c(5, 10, 20, 25, 50, 75, 100), purrr::safely(function(n) {
-#'
-#'   herd_with_infection_df %>%
-#'     select(
-#'       cow_id,
-#'       DIM = x.x,
-#'       y = y) %>%
-#'     unnest(c(DIM, y)) %>%
-#'     #' this is might be needless
-#'     mutate(y = as.numeric(y)) %>%
-#'     # filter(DIM > 5) %>%
-#'     group_by(cow_id) %>%
-#'     sample_n(n) %>%
-#'     ungroup() %>%
-#'     mutate(y = y + rnorm(n(), mean = 0, sd = 1)) %>%
-#'     # pivot_longer(c(DIM, y)) %>%
-#'     #' ensure that the rows are sorted by `cow_id`
-#'     nlme::nlme(
-#'       # logSCC ~ a + b * DIM + exp(-(exp(k)) * DIM)*d,
-#'       # daily_lactation_f  ~ a * (DIM ** b) * exp(-c * DIM),
-#'       y  ~ a * (DIM ** b) * exp(-c * DIM),
-#'       data = .,
-#'       fixed = a + b + c ~ 1,
-#'       random = a + b + c ~ 1,
-#'       groups =  ~ cow_id,
-#'       start = c(
-#'         a = 150,
-#'         b = -0.1,
-#'         c = -0.003
-#'       ),
-#'       # na.action = na.exclude,
-#'       # control = list(maxIter = 1200, msMaxIter = 1200)
-#'       # control = list(maxIter = 1200)
-#'       control = list(returnObject = TRUE,
-#'                      maxIter = 1200, msMaxIter = 1200)) ->
-#'     cow_level_model_output
-#'   #'
-#'   cow_level_model_output
-#'
-#'   herd_with_infection_df %>%
-#'     left_join(
-#'       nlme:::coef.lme(object = cow_level_model_output) %>%
-#'         rename_with(~paste0(.x, "_est")) %>%
-#'         rownames_to_column("cow_id"),
-#'       by = "cow_id") %>%
-#'     mutate(
-#'       y_est = daily_lactation_f(n = x.x[[1]],
-#'                                 a = a_est, b = b_est, c = c_est) %>%
-#'         asplit(MARGIN = 2)) %>%
-#'     group_by(cow_id) %>%
-#'
-#'     summarise(
-#'       n = n,
-#'       mse = mean((y_without_scc[[1]] - y_est[[1]])**2),
-#'       mae = mean(abs(y_without_scc[[1]] - y_est[[1]]))
-#'     )})) %>%
-#'   bind_rows() %>%
-#'   unpack(result) ->
-#'   all_fitting_df
-#' #'
-#' #'
-#' #'
-#' #'
-#' all_fitting_df %>%
-#'   pivot_longer(c(mse, mae)) %>%
-#'   mutate(cow_id = as.numeric(cow_id)) %>%
-#'   identity() %>% {
-#'     ggplot(.) +
-#'       aes(n, value, group = interaction(n), color = name) +
-#'
-#'
-#'       geom_boxplot() +
-#'
-#'       # geom_density() +
-#'       # geom_point() +
-#'       # geom_line() +
-#'       # guides(color = "none") +
-#'       facet_wrap(~name, scales = "free", ncol = 1) +
-#'       NULL
-#'   }
-#' #'
-#' #'
-#' #'
-#' #'
-#' all_fitting_df %>%
-#'   group_by(n) %>%
-#'   summarise(across(-cow_id, mean)) %>%
-#'   # summarise(across(-cow_id, sum)) %>%
-#'   pivot_longer(c(mse, mae)) %>%
-#'   identity() %>% {
-#'   ggplot(.) +
-#'     aes(n, value, group = interaction(name), color = name) +
-#'
-#'     # geom_density() +
-#'       geom_point() +
-#'       geom_line() +
-#'     # guides(color = "none") +
-#'     # facet_wrap(~n, scales = "free")
-#'     NULL
-#' }
-#' #'
-#' #'
-#' #'
-#' #'
+full_fitted_herd_df %>%
+  glimpse()

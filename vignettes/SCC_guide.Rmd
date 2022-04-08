@@ -1,0 +1,202 @@
+---
+title: "SCC_guide"
+description: >
+  Somatic Cell Count (SCC) curves fitted to modified Milk Curves with nonlinear models.
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{SCC_guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(woodcurvebox)
+```
+
+Somatic Cell Count (SCC) curves for dairy cows are a useful tool for:
+
+  * Surveillance of animal welfare
+  
+  * Supporting treatment decisions
+  
+  * Visualize SCC fluctuations throughout a lactation phase.
+  
+  
+A characteristic for the SCC curve is that it's somewhat similar to a reversed Milk curve.
+This means we can fit the SCC observations to modified milk curves, this being the Wood's and Wilmink function.
+For fitting, we will use nonlinear models.
+
+We will start by loading following packages for visualization and modelling: 
+
+```{r, message = FALSE}
+library(tidyverse)
+#library(tibble)
+library(nls.multstart)
+library(nlme)
+```
+
+
+# Models
+Both Wilmink and Wood's can be used to fit SCC.
+Fewer unknwon parameters in Wood's, that has 3 compared to the 4 in Wilmink.
+
+## Wood's function
+
+Nonlog Scale:
+a * DIM ** b * exp(-c * DIM)
+
+Logscale:
+log(a) + b * log(DIM) + (- c* DIM)
+
+```{r}
+f_woods <- function(DIM, a,b,c){
+  a * DIM ** b * exp(-c * DIM)
+}
+
+```
+
+## Wilmink function
+
+Logscale:
+a + b * DIM + exp(-(exp(k)) * DIM)*d
+
+ 
+```{r}
+f_wilmink <- function(DIM, a,b,k,d){
+  a + b * DIM + exp(-(exp(k)) * DIM)*d
+}
+
+```
+
+# Data
+
+Data simulating the SCC observations in a 305 days lactation can be simulated using a modified Wood's function.
+The 3 unknown parameters have been established through various tests (link to paper II when possible).
+Days of milk are set to a length of maximum 305 days, with an interval of 30 days.
+
+```{r}
+set.seed(20220329)
+
+woodcurvebox:::simulate_woods
+
+simulate_woods <- function(a = 5, b = 0.01, c = 0.001, sd= 1, DIM = seq(30,300,by=30), cowID = "CKR_1"){
+
+  # FIX start param. Check: a = 150, b = -0.1, c = -0.003.
+
+  stopifnot(length(a)==1, length(b)==1, length(c)==1, length(cowID)==1)
+  stopifnot(all(DIM > 0), all(DIM < 305))
+
+  scc <- a * DIM ** b * exp(-c * DIM) + rnorm(length(DIM), mean = 0, sd = sd)
+
+  return(data.frame(cowID = cowID, DIM=DIM, logSCC = scc))
+}
+
+```
+
+
+First we create the data frame for individual cows
+
+```{r}
+# FIX : this should be automated as a function
+# FIX: include rnorm variance for each parameter
+gen_cow_ids <- str_c("CKR", 1:10)
+gen_cow_ids %>%
+  map_df(function(cowID) simulate_woods(a = rnorm(1, 5, 0.1), ..., cowID = cowID)) %>%
+  identity() -> simulated_woods_df
+# simulate_woods(cowID = gen_cow_ids) # doesn't work because `simulate_woods`
+# does not vectorize over `cowID`
+
+```
+
+
+
+
+# Fitting
+
+## nls multistart
+
+```{r}
+f_nls <- 
+  nls.multstart::nls_multstart(
+  logSCC ~ a * (DIM**b) * exp(-c * DIM),
+  data = simulated_woods_df,
+  lower=c(a=0, b=0, k=-5, d=0), 
+  upper=c(a=9, b=1.5, k=0, d=5),
+  start_lower = c(a=0, b=0, k=-5, d=0),
+  start_upper = c(a=8, b=1, k=-0.01, d=4),
+  iter = 500,
+  supp_errors = "Y")
+
+```
+
+
+## nlme 
+
+```{r}
+f_nlme <-
+  nlme::nlme(
+  #scc ~ a * (DIM**b) * exp(-c * DIM),
+  logSCC ~ f_woods(DIM, a, b, c),
+  data = data,
+  fixed = a + b + c ~ 1,
+  random = a + b + c ~ 1,
+  # groups = ~cowID,
+  # groups = ~herdID,
+  start = c(
+    a = 150,
+    b = -0.1,
+    c = 0.003
+  ),
+  # na.action = na.exclude,
+  control = list(returnObject = TRUE)
+)
+```
+
+# Comparing the models
+
+## Parameters
+
+nls vs nlme.
+woods vs wilmink.
+
+GAM ?
+
+Compare the fit with density plot.
+
+Assess the models with ?
+
+
+
+
+## Fit
+
+Prediciton curves for each model
+
+
+
+# Additional - fitting on herd level
+
+We include a herd variable, and create noise specific for each herd.
+
+We are adding a herd ID to the data, including noise (epsilon_herd) specific to each herd
+
+```{r}
+simulated_woods_df %>%
+  dplyr::mutate(herdID = dplyr::if_else(str_detect(cowID, "[1-8]{1,1}$"), "A", "B")) %>%
+  dplyr::group_by(herdID) %>%
+  # mutate(epsilon_herd = rnorm(n = 1, mean = 0, sd = sd_herd)) %>%
+  dplyr::mutate(epsilon_herd = rnorm(n = 1, mean = 0, sd = 2)) %>%
+  dplyr::ungroup()
+
+```
+
+## Fitting on herd level
+
+nlme example on herd level
