@@ -37,7 +37,6 @@ We will start by loading following packages for visualization and modelling:
 
 ```{r, message = FALSE}
 library(tidyverse)
-#library(tibble)
 library(nls.multstart)
 library(nlme)
 ```

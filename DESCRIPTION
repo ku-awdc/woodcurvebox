@@ -19,9 +19,12 @@ Depends:
 Suggests: 
     rmarkdown,
     knitr,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    tidyverse
 Config/testthat/edition: 3
 Imports: 
     usethis,
-    truncnorm
+    truncnorm,
+    nlme,
+    nls.multstart
 VignetteBuilder: knitr
