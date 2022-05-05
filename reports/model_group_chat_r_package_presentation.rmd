@@ -6,7 +6,7 @@ output:
   xaringan::moon_reader:
     lib_dir: libs
     # seal: false
-    css: [default, metropolis, metropolis-fonts]
+    css: [default, metropolis, metropolis-fonts, "custom.css"]
     # css: [default, hygge-duke, metropolis-fonts]
     # css: [default, hygge-duke, metropolis-fonts]
     yolo: false
@@ -14,6 +14,7 @@ output:
       highlightStyle: github
       countIncrementalSlides: false
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -117,7 +118,7 @@ Create a directory, and name it what you would name the package
 
 Create a directory, and name it what you would name the package
 
-in `notebooks/` folder:
+in `notebooks/` :
 - *scripts*
 
 
@@ -128,10 +129,10 @@ in `notebooks/` folder:
 
 Create a directory, and name it what you would name the package
 
-in `notebooks/` folder:
+in `notebooks/` :
 - *scripts*
 
-in `R/` directory: 
+in `R/` : 
 - Create functions
 - Simulate data
 
@@ -143,15 +144,15 @@ in `R/` directory:
 
 Create a directory, and name it what you would name the package
 
-in `notebooks/` folder:
+in `notebooks/` :
 - *scripts*
 
-in `R/` directory: 
+in `R/` : 
 - Create functions
 - Simulate data
 
 
-in `man/` folder:
+in `man/` :
 - documentation files
 
 
@@ -161,15 +162,15 @@ in `man/` folder:
 
 Create a directory, and name it what you would name the package
 
-in `notebooks/` folder:
+in `notebooks/` :
 - *scripts*
 
-in `R/` directory: 
+in `R/` : 
 - Create functions
 - Simulate data
 
 
-in `man/` folder:
+in `man/` :
 - documentation files
 
 
@@ -184,15 +185,15 @@ And the `DESCRIPTION` is for basic descriptions
 
 Create a directory, and name it what you would name the package
 
-in `notebooks/` folder:
+in `notebooks/` :
 - *scripts*
 
-in `R/` directory: 
+in `R/` : 
 - Create functions
 - Simulate data
 
 
-in `man/` folder:
+in `man/` :
 - documentation files
 
 
@@ -227,12 +228,18 @@ My functions
 knitr::include_graphics("graphics/functions.png")
 ```
 
+---
+# My timeline
+
+R package is not for me...
+Learning tidy..
+...
 
 ---
 
-# Adding pictures
+# My Goal..
 
-Maybe round it up with a bit of visualisation
+.. is for everyone to see the beauty in Somatic Cell Count Curves
 
 ```{r, echo=FALSE}
 knitr::include_graphics("graphics/pct_p4_pos.png")
