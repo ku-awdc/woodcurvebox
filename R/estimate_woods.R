@@ -16,6 +16,8 @@
 #' data <- lapply(1:5, function(x) simulate_woods(cowID=x)) %>% bind_rows()
 #' estimate_woods(data)
 #'
+#' FIX: Update model to run one herd, with single cowIDs based on script 013 i notebooks
+#'
 #' @export
 estimate_woods <- function(data, logscale = FALSE) {
 
@@ -41,8 +43,8 @@ estimate_woods <- function(data, logscale = FALSE) {
   # repeat for all 6 diff. datasets
   nls_oh <- nls_multstart(logSCC ~ f_woods(DIM, a, b, c),
                           data = data,
-                          #                                         lower=c(a=0, b=0, c=-5),
-                          #                                         upper=c(a=9, b=1.5, c=5),
+                          lower=c(a=0, b=0, c=-5),
+                          upper=c(a=9, b=1.5, c=5),
                           start_lower = c(a=0, b=-1, c=-1),         # Check nonlog: a = 150, b = -0.1, c = -0.003
                           start_upper = c(a=300, b=1, c=1),
                           iter = 500,
@@ -68,17 +70,17 @@ estimate_woods <- function(data, logscale = FALSE) {
   return(nlme_oh)
 
   # TODO: remove:
-  nlme_oh
-  ranef(nlme_oh)
-
-  fakedata <- expand_grid(AnimalParity = unique(one_herd$AnimalParity), DIM = 6:305)
-  fakedata$prediction <- predict(nlme_oh, newdata = fakedata)
-
-  animals <- sample(unique(one_herd$AnimalParity), 2)
-  ggplot() +
-    geom_line(data=fakedata %>% filter(AnimalParity %in% animals), aes(x=DIM, y=prediction, col=AnimalParity)) +
-    geom_point(data=one_herd %>% filter(AnimalParity %in% animals), aes(x=DIM, y=logSCC, col=AnimalParity)) +
-    theme(legend.pos = "none")
+  # nlme_oh
+  # ranef(nlme_oh)
+  #
+  # fakedata <- expand_grid(AnimalParity = unique(one_herd$AnimalParity), DIM = 6:305)
+  # fakedata$prediction <- predict(nlme_oh, newdata = fakedata)
+  #
+  # animals <- sample(unique(one_herd$AnimalParity), 2)
+  # ggplot() +
+  #   geom_line(data=fakedata %>% filter(AnimalParity %in% animals), aes(x=DIM, y=prediction, col=AnimalParity)) +
+  #   geom_point(data=one_herd %>% filter(AnimalParity %in% animals), aes(x=DIM, y=logSCC, col=AnimalParity)) +
+  #   theme(legend.pos = "none")
 
 
 

@@ -1,0 +1,242 @@
+LKSYGKODE,LKSYGTEKST,n,AB,UsesAB,UsesAB2,Comment
+0,NA,27331,0,No,No,NA
+1,Brunstmangel,88226,0,No,No,NA
+2,Børbetændelse,1172287,1,Yes,Variable,Some are treated with hormones - This diagnosis is metritis - inflamed uterus
+3,Cyster,91085,0,No,No,NA
+4,Efterbyrd,549331,1,Variable,Variable,NA
+5,Forundersøgelse,16990,0,No,No,NA
+6,Blødning,59124,0,No,No,NA
+7,Brunst,115497,0,No,No,NA
+8,Brunstinduktion,491646,0,No,No,NA
+9,"Reprolidelse, andet",89193,0,No,No,NA
+11,Yverbetændelse,4698821,1,Yes,Yes,NA
+12,"Yverbetændelse, goldperioden",92620,1,Yes,Yes,NA
+13,Goldningsbehandling,1471014,1,Yes,Yes,NA
+14,Yverbetændelse efter læsion,1980,1,Uncertain,Variable,NA
+15,"Yverbetændelse, akut",534109,1,Yes,Variable,Some treat with only supportive therapy for e. coli mastitis
+16,Pattetråd,11126,1,No,Variable,AB if infected
+17,Patteopstikning,4033,1,No,Variable,AB if infected
+18,Patteamputation,11625,1,No,Variable,AB if infected and fever
+19,"Yverlidelse, andet",30393,1,Uncertain,Variable,Maybe topical if infected udder wound
+20,Løbeudvidelse,1019,0,No,No,NA
+21,Ketose,287621,0,No,No,NA
+22,Kælvningsfeber,396000,0,No,No,Unless in combination with mastitis
+23,Løbedrejning,87695,1,No,Variable,If operated then prophylactic AB
+24,Fordøjelsesforstyrrelse,51662,1,No,Uncertain,Some vets may use antibiotics - see Diarré
+25,Fremmedlegeme,66759,1,No,Yes,AB if infection in diaphragm and cardiac sack suspected
+26,Sur vom (vomacidose),1685,1,No,Uncertain,Ab if suspected ulcer
+27,Løbekatarrh/forgiftning,33532,0,No,No,NA
+28,Tarmbetændelse,1124398,1,No,Variable,Some vets may use antibiotics - see Diarré
+29,"Ford./stofskiftelidelse, andet",37441,1,No,Uncertain,Some vets may use antibiotics - see Diarré
+30,Græsforgiftning,1582,0,No,No,NA
+31,Trykning,110290,0,No,No,Unless infected
+32,Klovbrandbyld,1260694,1,Yes,Yes,NA
+33,Sålesår,388396,1,No,Uncertain,Perhaps if infected?
+34,Balleforrådnelse,507589,1,No,Uncertain,NA
+35,Hudbetændelse,143393,1,Yes,Variable,NA
+36,Såleblødning,988137,1,Yes,No,NA
+37,Tyk has,417144,1,No,Variable,Suspected infection of the joint is often treated with AB
+38,Ledbetændelse,190452,1,Uncertain,Yes,NA
+39,"Lemmelidelse, andet",269336,1,No,Variable,NA
+40,Halelæsion,13091,1,No,Variable,AB if infected often amputaion but AB if fever
+41,Lungebetændelse,2770348,1,Yes,Yes,NA
+42,Infektion,168508,1,Yes,Yes,NA
+44,Tånekrose,32087,1,No,Uncertain,NA
+45,Magnet ilagt,14762,0,No,No,NA
+46,Børstave ilagt,1829,1,Yes,Yes,NA
+47,Abort,91874,0,No,No,Unless infection after
+48,Nydannelse,364547,0,No,No,NA
+49,Lidelse andet,69977,1,No,Uncertain,NA
+51,Diarre,678073,1,No,Variable,"AB products registered for treatment: http://medicintildyr.dk/produkt.aspx?soeg=dyr&dyr=14&i=0,441&t=0"
+52,Coccidiose,371901,0,No,No,NA
+53,Navlebetændelse,253401,1,Uncertain,Yes,NA
+54,Leverikte,9719,0,No,No,NA
+55,Lungeorm,37295,1,No,Variable,If secondary lung infection
+56,Løbetarmorm,10855,0,No,No,NA
+57,Ormebehandling,5077,0,No,No,NA
+58,Skab,96565,0,No,No,NA
+59,Kalve under 6 mdr. andet,1293,0,No,No,NA
+65,"Cyster, hormonbeh.",12854,0,No,No,NA
+66,Skedebetændelse,33643,1,Uncertain,Variable,Depends on severity
+67,Fødselsinduktion,4774,0,No,No,NA
+68,Inaktive æggestokke,2815,0,No,No,NA
+69,Forbrunst,120,0,No,No,NA
+70,Efterbrunst,84,0,No,No,NA
+72,Fluemastitis,9661,1,Yes,Yes,NA
+79,Kvie over 6 mdr. andet,89,0,No,No,NA
+80,Klovbeskæring,5951549,0,No,No,NA
+81,Klovbeskæring ++,19,0,No,No,NA
+82,Klovbeskæring +,10,0,No,No,NA
+83,Klovbeskæring -,5,0,No,No,NA
+84,Klovbeskæring --,92,0,No,No,NA
+85,God drikkelyst,2592,0,No,No,NA
+86,Godt middel drikkelyst,1472,0,No,No,NA
+87,Knap middel drikkelyst,383,0,No,No,NA
+88,Manglende drikkelyst,189,0,No,No,NA
+89,Tyr over 6 mdr. andet,19,0,No,No,NA
+90,Børkrængning,7463,1,No,Variable,AB if very dirty conditions
+91,Børslyngning,9516,0,No,No,NA
+92,Kejsersnit,8905,1,No,Yes,Very often prophylactic treatment
+93,Pattehudsbetændelse,316,1,Uncertain,Variable,NA
+94,"Yverbetændelse, brandig",511,1,Yes,Yes,NA
+95,"Yverbetændelse, subklinisk",2652,1,Uncertain,Variable,Sometimes AB if very high SCC and positive milk sample
+96,"Løbedrejning, højresidig",1009,1,No,Variable,Should be operated  - often prophylactic AB
+97,"Løbedrejning, venstresidig",12359,1,No,Variable,If operated then prophylactic AB
+98,Trommesyge,3208,0,No,No,NA
+99,Projekt,1417,0,No,No,NA
+110,Drægtig,67,0,No,No,NA
+112,Fødselshjælp,32899,0,No,No,NA
+113,Ikke drægtig,194,0,No,No,NA
+120,Endetarmskrængning,52,0,No,No,NA
+121,Drægtighedssyge,33,0,No,No,NA
+122,Manglende opblokning,14,0,No,No,NA
+123,Kobberforgiftning,3,0,No,No,NA
+125,Kobbermangel,5,0,No,No,NA
+127,Ondartet klovsyge,12,1,Uncertain,No,Sheep/goat disease
+128,Bændelorm,5,0,No,No,NA
+129,Fluelarver (maddiker),83,0,No,No,NA
+130,Mundskurv (ORF),63,1,No,Uncertain,Local AB?
+131,Øjenbetændelse,22913,1,Uncertain,Yes,NA
+132,Øjenlåg indadvendt,37,0,No,No,NA
+133,Mellemørebetændelse,19122,1,Uncertain,Variable,"If severe, yes"
+135,Asymmetrisk klov,104048,0,No,No,NA
+136,Proptrækkerklov,37846,0,No,No,NA
+137,Overgroet klov,78729,0,No,No,NA
+138,Sakseklov,36133,0,No,No,NA
+139,Dobbeltsål,241305,0,No,No,NA
+140,Klovbeskæring ++,113,0,No,No,NA
+141,Klovbeskæring +,168,0,No,No,NA
+142,Klovbeskæring -,6,0,No,No,NA
+143,Klovbeskæring --,3,0,No,No,NA
+144,"Hul væg, løs hvid linje",415593,0,No,No,NA
+145,"Hul væg, byld i hvid linje",159363,1,No,Uncertain,Perhaps AB if non-chronic
+146,"Balleforrådnelse, svær",64,1,No,Uncertain,NA
+147,"Klovspalte, betændelse",72675,1,Yes,Yes,NA
+148,"Klovspalte, nydan, side",10,0,No,No,NA
+149,"Klovspalte, nydan, midt",144,0,No,No,NA
+150,"Såleknusning, let",146,0,No,No,NA
+151,"Såleknusning, forbind",149,0,No,No,NA
+152,"Såleknusning, dobb.sål",112,0,No,No,NA
+153,"Laminitis, rød sål",57,1,No,Uncertain,NA
+154,"Laminitis, R/H linie",5,1,No,Uncertain,NA
+155,"Laminitis, Br/H linie",48,1,No,Uncertain,NA
+156,Digital dermatitis,1599079,1,Yes,Yes,Typically local topical treatment
+157,Digital vorte,3340,0,No,No,NA
+158,Snabelklov,1430,0,No,No,NA
+159,Halthedsscore,11053,0,No,No,NA
+160,Kastration/studning,25904,0,No,No,NA
+161,Urinvejsinfektion,863,1,Uncertain,Variable,If fever
+162,Nyrebækkenbetændelse,844,1,Uncertain,Variable,If fever
+163,Blærebetændelse,271,1,No,Variable,If fever
+164,Løbesår/mavesår,2662,1,No,Variable,NA
+165,Fedtlever,2535,0,No,No,NA
+166,Cryptosporidiose,1304603,0,No,No,NA
+167,Aktinomykose,1065,1,Yes,Yes,NA
+168,Vinterostertagiose,530,0,No,No,NA
+169,Salmonella (dublin),135,1,No,Uncertain,If severe diarrhea first?
+170,Paratuberkulose,400,1,No,Uncertain,Maybe if treated for diarrhea first
+171,Vomforrådnelse (vomalkalose),876,1,No,Uncertain,NA
+172,Tarmslyng,144,1,No,Variable,AB if operated (I actually did that once)
+173,Blindtarmsdilatation,443,0,No,No,NA
+174,Cerebrokortikal nekrose,314,0,No,No,NA
+175,"Bughindebetændelse, peritonitis",5216,1,Uncertain,Yes,NA
+176,Kalvedifteritis,5276,1,Uncertain,Yes,NA
+177,"Aflivning, kreatur",45965,0,No,No,NA
+178,Ringorm,44264,0,No,No,NA
+179,Yverbetændelse med lammelse,1294,1,Uncertain,Variable,"See Yverbetændelse, akut"
+180,"Operation, anvendt medicin",2370,1,Uncertain,Variable,NA
+181,"Operation, efterbehandling",4833,1,Uncertain,Variable,Often AB
+182,Dødsattest,322,0,No,No,NA
+183,Maeidiprøver,3,0,No,No,NA
+184,Selen og vitaminbehandling,35256,0,No,No,NA
+185,vitamin- og jernbehandling,19419,0,No,No,NA
+186,Tyrering isat,201,0,No,No,NA
+187,Væskemangel/væsketerapi,1432,0,No,No,NA
+188,Mælkeprøve udtaget,268439,0,No,No,NA
+189,BVD-prøve udtaget,3,0,No,No,NA
+190,Blodprøve udtaget,1096,0,No,No,NA
+199,Manglende mælkenedlægning,400490,0,No,No,NA
+200,NA,970,0,No,No,NA
+201,"Hæmolyserende streptokokker, gr. A. streptokokker",174,1,Yes,Yes,NA
+202,Streptokok agalactia - gr. B. strep-tokokker,8155,1,Yes,Yes,NA
+203,Coliforme stave,11121,1,Uncertain,Uncertain,NA
+204,Streptokok dysgalactia,139460,1,Yes,Yes,NA
+205,E-coli,220853,1,Uncertain,Variable,"See Yverbetændelse, akut"
+206,Gær,9999,1,No,Variable,AB if treatment was started before results were available
+207,Hæmolyserende streptokokker,4110,1,Uncertain,Yes,NA
+208,Listeria monocytogenes,19,1,Uncertain,Uncertain,NA
+209,CNS,626162,1,Yes,Variable,NA
+210,"Koagulasenegative stafylokokker, pen.",14023,1,Uncertain,Variable,NA
+211,Lactococcus spp,2978,1,Uncertain,Uncertain,NA
+212,Enterococcus spp,107933,1,Uncertain,Uncertain,Rare cause of mastitis - often contamination
+213,Arcanobacterium pyogenes,20692,1,Yes,Yes,NA
+214,Corynebacterium bovis,16281,1,Uncertain,Variable,Should be no
+215,Staph. Aureus,347088,1,Yes,Yes,NA
+215,Staph. aureus (stafylokokker),1,1,Yes,Yes,NA
+216,"S. aureus, pen. res.",8910,1,Yes,Yes,NA
+217,Strept. Uberis,325432,1,Yes,Yes,NA
+217,"Str. uberis, mucoide variant",1,1,Yes,Yes,NA
+218,"Str. uberis, mucoide variant",791,1,Yes,Yes,NA
+219,"Mælkeprøve, anden bakterie",102553,1,No,Variable,Pseudomonas is rare but severe and ofte treated with AB unless the cow dies first
+220,Ingen vækst,252572,0,No,No,NA
+221,Klebsiella,13525,1,Uncertain,Variable,Often very severe
+222,Micrococcus spp,28812,1,Uncertain,Variable,NA
+223,Bacillus spp,7049,1,Uncertain,Variable,Should be no
+224,Proteus,1193,1,Uncertain,Variable,Should be no
+225,Mycoplasma bovis,490,1,Uncertain,Variable,Often either treatment or culling
+226,Mycoplasma spp,986,1,Uncertain,Uncertain,NA
+227,Prototheca  spp,59,1,Uncertain,Uncertain,NA
+250,Vaccine 1,287410,0,No,No,NA
+251,Vaccine 2,46682,0,No,No,NA
+260,Sera,78,0,No,No,NA
+261,Råmælksmåling,2,0,No,No,NA
+262,Overførsel af råmælksantistoffer,4,0,No,No,NA
+263,Tyrekvie,38,0,No,No,NA
+270,Optrapning/steaming up,1985,0,No,No,NA
+271,Abortinduktion,463,0,No,No,NA
+272,Atypisk mælkefeber,1162,0,No,No,NA
+273,Brud på knogle,478,1,No,Variable,If open and in very dirty environment prophylactic
+274,Sterilisation,17,0,No,No,NA
+275,Lus,4729,0,No,No,NA
+276,Immunisering,11046,0,No,No,NA
+280,Fluekontrol,198220,0,No,No,NA
+290,Prog.spiral ind,2795,0,No,No,NA
+291,Prog.spiral ud,390,0,No,No,NA
+300,Rådgivningsbesøg,4831,0,No,No,NA
+310,Afhorning af kalve,596237,0,No,No,NA
+320,Intern pattelukning,625691,0,No,No,NA
+330,"Bluetongue, vaccineret mod",2384993,0,No,No,NA
+340,"Mastitis Staf/E.coli, vaccination",108472,0,No,No,NA
+341,Afgoldningsfacilitator,1144,0,No,No,NA
+801,IBR negativ blodprøve,36,0,No,No,NA
+802,Leukose negativ blodprøve,10,0,No,No,NA
+803,Brucellose negativ blodprøve,13,0,No,No,NA
+804,Tb prøve negativ hudtest,1,0,No,No,NA
+805,BVD virus negativ blodprøve,33,0,No,No,NA
+806,BVD antistov negativ blodprøve,29,0,No,No,NA
+807,BVD antistof positiv blodprøve,1,0,No,No,NA
+811,Para Tb negativ blodprøve,469,0,No,No,NA
+813,"Leptospirose - Interrogans, castellonis, pyrogenes, tarassovi og wolffi",3,1,Uncertain,Uncertain,NA
+814,Ringvac.,4518,0,No,No,NA
+816,IBR negativ sædstrå,1,0,No,No,NA
+819,Para Tb positiv blodprøve,7,0,No,No,NA
+820,Chlamydia negativ blodprøve,1,0,No,No,NA
+821,"IBR,Leukose, Brucellose, BVD virus og antistof: Neg.blodprøve. Tb: neg.hudtest",1749,0,No,No,NA
+822,"IBR,Brucellose,BVD Virus og antistof:Neg.blodprøve. Camfylobacter og Tricomonas:neg.forhudsskyllepr.",1404,0,No,No,NA
+823,Camfylobacter neg skedeskylleprøve og tricomonas negativ skedeskylleprøve,148,0,No,No,NA
+825,"Rotavac, ringvac. og tb. neg. hudtest",602,0,No,No,NA
+831,Q fever- negativ blodprøve,6,0,No,No,NA
+832,"Brucella agg + CF, negativ blodprøve",4,0,No,No,NA
+833,"Leptospirose- hardjo, hebdomis, grippo og ictero",6,1,Uncertain,Uncertain,NA
+834,"Leptospirose- can, grippo, hardjo, ictero og Pomona",5,1,Uncertain,Uncertain,NA
+835,Bluetongue antistof negativ,503,0,No,No,NA
+836,Bluetonguevirusnegativ,179,0,No,No,NA
+840,Schmallenberg ELISA negativ,146,0,No,No,NA
+841,Schmallenberg SN negativ,18,0,No,No,NA
+844,Schmallenberg positiv,46,0,No,No,NA
+850,Serum prøve udtaget,278,0,No,No,NA
+872,"Prøve udtaget IBR,Brucellose,BVD Virus, antist.:Neg.blodpr. Camfylob. og Tricom.:neg.forh.skyllepr.",2,0,No,No,NA
+884,"Prøve udtaget Leptospirose- can, grippo, hardjo, ictero og Pomona",1,0,No,No,NA
+885,Prøve udtaget Bluetongue antistof negativ,2,0,No,No,NA
+890,Rotavec-Corona Vac.,17736,0,No,No,NA
+891,"Bovipast RSP, Intervet",1030,0,No,No,NA

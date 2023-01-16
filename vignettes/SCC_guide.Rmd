@@ -26,11 +26,12 @@ Somatic Cell Count (SCC) curves for dairy cows are a useful tool for:
   
   * Supporting treatment decisions
   
-  * Visualize SCC fluctuations throughout a lactation phase.
+  * Visualize SCC fluctuations throughout a lactation phase to identify potential masttitis cases.
   
   
 A characteristic for the SCC curve is that it's somewhat similar to a reversed Milk curve.
-This means we can fit the SCC observations to modified milk curves, this being the Wood's and Wilmink function.
+This means we can fit the SCC observations to modified milk curves, this being the Wood's and Wilmink lactation functions.
+
 For fitting, we will use nonlinear models.
 
 We will start by loading following packages for visualization and modelling: 
@@ -44,7 +45,9 @@ library(nlme)
 
 # Models
 Both Wilmink and Wood's can be used to fit SCC.
-Fewer unknwon parameters in Wood's, that has 3 compared to the 4 in Wilmink.
+Fewer unknown parameters in Wood's, that has 3 compared to the 4 in Wilmink.
+
+FIX: Update with a three parameter wilmink
 
 ## Wood's function
 
@@ -55,6 +58,8 @@ Logscale:
 log(a) + b * log(DIM) + (- c* DIM)
 
 ```{r}
+## FIX: Call function from woodcurvebox instead
+
 f_woods <- function(DIM, a,b,c){
   a * DIM ** b * exp(-c * DIM)
 }
@@ -68,6 +73,8 @@ a + b * DIM + exp(-(exp(k)) * DIM)*d
 
  
 ```{r}
+## FIX: Call function from woodcurvebox instead. Both 3 and 4 parameter
+
 f_wilmink <- function(DIM, a,b,k,d){
   a + b * DIM + exp(-(exp(k)) * DIM)*d
 }
@@ -84,18 +91,6 @@ Days of milk are set to a length of maximum 305 days, with an interval of 30 day
 set.seed(20220329)
 
 woodcurvebox:::simulate_woods
-
-simulate_woods <- function(a = 5, b = 0.01, c = 0.001, sd= 1, DIM = seq(30,300,by=30), cowID = "CKR_1"){
-
-  # FIX start param. Check: a = 150, b = -0.1, c = -0.003.
-
-  stopifnot(length(a)==1, length(b)==1, length(c)==1, length(cowID)==1)
-  stopifnot(all(DIM > 0), all(DIM < 305))
-
-  scc <- a * DIM ** b * exp(-c * DIM) + rnorm(length(DIM), mean = 0, sd = sd)
-
-  return(data.frame(cowID = cowID, DIM=DIM, logSCC = scc))
-}
 
 ```
 
@@ -114,6 +109,13 @@ gen_cow_ids %>%
 
 ```
 
+
+## variable format
+
+Names for variables should be according to the woodcurvebox functions, where:
+UNique animal ID : "cowID"
+Days in Milk, time in lactation: "DIM"
+Somatic Cell Count on a log scale: "logSCC"
 
 
 

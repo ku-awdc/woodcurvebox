@@ -9,9 +9,6 @@ estimate_wilmink(data)
 \arguments{
 \item{data}{}
 }
-\value{
-
-}
 \description{
 Title
 }
@@ -24,5 +21,7 @@ estimate_wilmink(data)
 library(tidyverse)
 data <- lapply(1:5, function(x) simulate_woods(cowID=x)) \%>\% bind_rows()
 estimate_wilmink(data)
+
+FIX: Update model to run one herd, with single cowIDs based on script 013 i notebooks
 
 }

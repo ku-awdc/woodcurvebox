@@ -1,5 +1,7 @@
+#'
+#'
 #' This used data loaded from `nlme_4`.
-
+#'
 good_herds <-
   df2 %>%
   ungroup() %>%

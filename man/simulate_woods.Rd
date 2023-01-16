@@ -8,7 +8,7 @@ simulate_woods(
   a = 5,
   b = 0.01,
   c = 0.001,
-  DIM = seq(30, 300, by = 30),
+  dim = seq(30, 300, by = 30),
   cowID = "CKR_1"
 )
 }
@@ -19,10 +19,10 @@ simulate_woods(
 
 \item{c}{desc}
 
-\item{DIM}{which DIM do we want?}
+\item{dim}{which dim do we want?}
 }
 \value{
-a series of simulated data from 1 cow
+a series of simulated data from 1 cow with 30 dim between observations
 }
 \description{
 Simulate data from a woods curve
