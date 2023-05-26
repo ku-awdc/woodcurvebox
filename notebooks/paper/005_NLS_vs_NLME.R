@@ -3,16 +3,10 @@
 # Maj, majbh@sund.ku.dk
 
 # Paper woodcurvebox
-# NLS vs NLME vs BRM
+# NLS vs NLME
 # (WOODS vs WILMINK done with residuals in 007)
 # data: top 20 herds, Parity 3, conventional, Holstein
 
-## GOAL:
-# NLS curves for all 20 top herds
-# NLME curves for all 20 top herds
-# Combine NLS and NLME in one
-
-# Approach with woods............
 
 # Packages and settings ----------------------------------------
 
@@ -169,9 +163,6 @@ df3_sep |>
 
 
 
-# linear regression, MSQ vs selected variables
-lm(log(MSQ) ~ BES_ID, data = animal_data) #FIX: add PCR and parity in data.. Or use PCR data...
-# If MSR is correlated with PCR status, then we can use MSR as appr. for disease....
 
 
 

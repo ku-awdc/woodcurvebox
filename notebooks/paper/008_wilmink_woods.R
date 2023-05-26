@@ -1,10 +1,13 @@
 
-
-# Maj, majbh@sund.ku.dk
-
+# @majbedring
 # Paper woodcurvebox
 
-# FIX create summary descriptives
+# Here we compare a Woods and a Wilminks.
+# FIX create boxplot -> Supplementary plots
+# FIX retrieve summary descriptives -> Supplementary table
+
+# FIX: Add something to discussion: Best fit Woods or Wilmink ?
+
 
 # Packages and settings ----------------------------------------
 
@@ -170,8 +173,14 @@ df_sep |>
 # Boxplot MSQ, catch, here NLS vs NLME
 ggplot(animal_data, aes(x=BES_ID, y=MSQ, fill=Parameter, col=Parameter)) +
   geom_boxplot() +
+  labs(y= "MSR") +
+  theme(axis.text = element_text(size = 22),
+        axis.title = element_text(size = 22),
+        text = element_text(size = 22)) +
   scale_y_continuous(trans="log10")
 
+ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/Figure_woods_wilmink.tiff", width = 40, height = 30, units = "cm", dpi=300)
+# width = 40, height = 20, units = "cm",
 
 
 
@@ -217,9 +226,9 @@ animal_data |>
 
 # Summary of MSQ - Parity level
 animal_data |>
-  select(PARITY, MSQ) |>
+  select(Parameter, MSQ) |>
   drop_na() |>
-  group_by(PARITY) |>
+  group_by(Parameter) |>
   summarize(min = min(MSQ),
             q1 = quantile(MSQ, 0.25),
             median = median(MSQ),

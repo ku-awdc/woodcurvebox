@@ -1,11 +1,16 @@
 
 
-# Maj, majbh@sund.ku.dk
+# @majbeldring
 
-# Paper woodcurvebox
+# MAIN OUTPUT FOR PAPER
 
-# to do:
-# Plot all animals with mean parameters using predict
+# Paper woodcurvebox:
+## fitting all data grouped by animal ID and Parity (random effects over these)
+## Table 2+3 from here
+## MSQ over parities found here
+## retreieving single animals is also from this script.
+## Residuals per DIM also in this script
+
 
 
 # To do: anomymize herds
@@ -14,6 +19,7 @@
 
 library(tidyverse)
 library(pbapply)
+library(knitr) # for kable tables
 library(ggpubr) # p values in boxplot
 library(gridExtra) # gridarrange
 ggplot2::theme_set(ggplot2::theme_bw())  # globally sets ggplot2 theme to theme_bw
@@ -25,6 +31,8 @@ library(nlme) # for nlslist
 #library(hrbrthemes)
 #library(broom)
 #library(viridis)
+
+# ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/Figure.tiff", width = 40, height = 40, units = "cm", dpi=300)
 
 
 
@@ -78,7 +86,7 @@ df_sep <- df_top |>
 
     # Only animals with exactly 9 obs covering a min of 250 DIM range
     x |>
-      group_by(DYR_ID) |>
+      group_by(Ani) |>
       mutate(Range = as.numeric(max(DIM) - min(DIM), units="days")) |>
       filter(Range >= 250) |>
       ungroup() |>
@@ -140,10 +148,14 @@ df_sep |>
 # Boxplot MSQ, catch, here NLS vs NLME
 ggplot(animal_data, aes(x=BES_ID, y=MSQ, fill=PARITY, col=PARITY)) +
   geom_boxplot() +
+  labs(y= "MSR") +
+  theme(axis.text = element_text(size = 18),
+        axis.title = element_text(size = 18),
+        text = element_text(size = 18)) +
   scale_y_continuous(trans="log10")
 
-
-
+ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/Figure_Boxplot_all.tiff", width = 40, height = 20, units = "cm", dpi=300)
+# width = 40, height = 20, units = "cm",
 
 
 # OUTLIERS Single animals -----------------------------------------------
@@ -183,37 +195,47 @@ df_sep |>
   filter(Ani == '1011699936_1')|>
   ggplot(aes(x=DIM, y=logSCC)) +
   geom_point(size=5) +
+  ylim(-0.01, 9.0) +
   geom_line(aes(y=Prediction_nlme), colour= "coral", size = 2) +
     theme(text = element_text(size = 22)) +
-    ggtitle("Parity 1")
+    ggtitle("Parity 1") -> p_1
 
 # visualize predicted logSCC curves, parity 2
 df_sep |>
     filter(Ani == '1017134708_2')|>
     ggplot(aes(x=DIM, y=logSCC)) +
     geom_point(size=5) +
+    ylim(-0.01, 9.0) +
     geom_line(aes(y=Prediction_nlme), colour= "darkolivegreen4", size = 2) +
     theme(text = element_text(size = 22)) +
-    ggtitle("Parity 2")
+    ggtitle("Parity 2") -> p_2
 
 # visualize predicted logSCC curves, parity 3
 df_sep |>
   filter(Ani == '1011465089_3')|>
   ggplot(aes(x=DIM, y=logSCC)) +
   geom_point(size=5) +
+  ylim(-0.01, 9.0) +
   geom_line(aes(y=Prediction_nlme), colour= "darkturquoise", size = 2) +
   theme(text = element_text(size = 22)) +
-  ggtitle("Parity 3")
+  ggtitle("Parity 3") -> p_3
 
-# visualize predicted logSCC curves, parity 3
+# visualize predicted logSCC curves, parity > 3
 df_sep |>
   filter(Ani == '1013845877_4')|>
   ggplot(aes(x=DIM, y=logSCC)) +
   geom_point(size=5) +
+  ylim(-0.01, 9.0) +
   geom_line(aes(y=Prediction_nlme), colour= "darkorchid2", size = 2) +
   theme(text = element_text(size = 22)) +
-  ggtitle("Parity > 3")
+  ggtitle("Parity > 3") -> p_4
 
+
+ggarrange(p_1, p_2, p_3, p_4,
+          ncol=2, nrow=2,
+          common.legend = TRUE, legend="right")
+
+ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/Figure_MSR_Anis.tiff", width = 40, height = 20, units = "cm", dpi=300)
 
 
 # plot all - Not working. Need to find the average mean at every DIM
@@ -223,6 +245,16 @@ df_sep |>
   geom_line(aes(y=Prediction_nlme), colour= "red", size = 2) +
   theme(text = element_text(size = 22)) +
   ggtitle("Mean")
+
+
+# plot a good animal:
+df_sep |>
+  filter(Ani == '1014616772_1')|>
+  ggplot(aes(x=DIM, y=logSCC)) +
+  geom_point(size=5) +
+  geom_line(aes(y=Prediction_nlme), colour= "red", size = 2) +
+  theme(text = element_text(size = 22))
+ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/Figure_Ani_Good.tiff", width = 40, height = 20, units = "cm", dpi=300)
 
 
 
@@ -254,7 +286,7 @@ df_sep |>
 
 
 
-# Summary of MSQ - herd level
+# Summary of MSR - herd level
 animal_data |>
   select(BES_ID, MSQ) |>
   drop_na() |>
@@ -264,9 +296,11 @@ animal_data |>
             median = median(MSQ),
             mean = mean(MSQ),
             q3 = quantile(MSQ, 0.75),
-            max = max(MSQ))
+            max = max(MSQ)) |>
+  kable()
 
-# Summary of MSQ - Parity level
+
+# Summary of MSR - Parity level
 animal_data |>
   select(PARITY, MSQ) |>
   drop_na() |>
@@ -276,10 +310,40 @@ animal_data |>
             median = median(MSQ),
             mean = mean(MSQ),
             q3 = quantile(MSQ, 0.75),
-            max = max(MSQ))
+            max = max(MSQ)) |>
+  kable()
 
 
 
+
+
+
+
+
+# Evaluate Residuals over DIM --------------------------
+
+
+# Boxplot, residuals NLME vs DIM
+ggplot(df_sep, aes(x=DIM, y=Residuals_nlme, group=DIM)) +
+  geom_boxplot(outlier.colour = "red", outlier.shape = 0.5, aes(group = cut_width(DIM, 5))) +
+  labs(y= "Residuals") +
+  theme(text = element_text(size = 12))
+  # + ggtitle("Residuals per DIM")
+ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/Figure_DIM.tiff", dpi=300)
+
+
+ggplot(df_sep, aes(x=DIM, y=Residuals_nlme, group=DIM)) +
+  geom_boxplot(aes(group = cut_width(DIM, 5))) +
+  theme(text = element_text(size = 18)) +
+  ggtitle("Residuals per DIM")
+
+
+
+
+# count for summary tables in paper ----------------------------------
+
+# if DYR_ID is wanted, just divide total SCC with 9
+table1_count <- df_sep %>% count(BES_ID, sort = TRUE)
 
 
 # Save ----------------------------------------------------------------------------
