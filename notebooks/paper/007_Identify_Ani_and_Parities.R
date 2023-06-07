@@ -2,7 +2,7 @@
 
 # @majbeldring
 
-# MAIN OUTPUT FOR PAPER
+# MAIN OUTPUT FOR PAPER - for Wilmink vs Woods, see script 8
 
 # Paper woodcurvebox:
 ## fitting all data grouped by animal ID and Parity (random effects over these)
@@ -144,6 +144,7 @@ df_sep |>
   ungroup()->
   animal_data
 
+cbbPalette <- c("#E69F00", "#56B4E9", "#009E73","#CC79A7", "#F0E442", "#0072B2", "#D55E00")
 
 # Boxplot MSQ, catch, here NLS vs NLME
 ggplot(animal_data, aes(x=BES_ID, y=MSQ, fill=PARITY, col=PARITY)) +
@@ -152,7 +153,8 @@ ggplot(animal_data, aes(x=BES_ID, y=MSQ, fill=PARITY, col=PARITY)) +
   theme(axis.text = element_text(size = 18),
         axis.title = element_text(size = 18),
         text = element_text(size = 18)) +
-  scale_y_continuous(trans="log10")
+  scale_y_continuous(trans="log10") +
+  scale_fill_manual(values=cbbPalette)
 
 ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/Figure_Boxplot_all.tiff", width = 40, height = 20, units = "cm", dpi=300)
 # width = 40, height = 20, units = "cm",
@@ -196,7 +198,7 @@ df_sep |>
   ggplot(aes(x=DIM, y=logSCC)) +
   geom_point(size=5) +
   ylim(-0.01, 9.0) +
-  geom_line(aes(y=Prediction_nlme), colour= "coral", size = 2) +
+  geom_line(aes(y=Prediction_nlme), colour= "#E69F00", size = 2) +
     theme(text = element_text(size = 22)) +
     ggtitle("Parity 1") -> p_1
 
@@ -206,7 +208,7 @@ df_sep |>
     ggplot(aes(x=DIM, y=logSCC)) +
     geom_point(size=5) +
     ylim(-0.01, 9.0) +
-    geom_line(aes(y=Prediction_nlme), colour= "darkolivegreen4", size = 2) +
+    geom_line(aes(y=Prediction_nlme), colour= "#56B4E9", size = 2) +
     theme(text = element_text(size = 22)) +
     ggtitle("Parity 2") -> p_2
 
@@ -216,7 +218,7 @@ df_sep |>
   ggplot(aes(x=DIM, y=logSCC)) +
   geom_point(size=5) +
   ylim(-0.01, 9.0) +
-  geom_line(aes(y=Prediction_nlme), colour= "darkturquoise", size = 2) +
+  geom_line(aes(y=Prediction_nlme), colour= "#009E73", size = 2) +
   theme(text = element_text(size = 22)) +
   ggtitle("Parity 3") -> p_3
 
@@ -226,7 +228,7 @@ df_sep |>
   ggplot(aes(x=DIM, y=logSCC)) +
   geom_point(size=5) +
   ylim(-0.01, 9.0) +
-  geom_line(aes(y=Prediction_nlme), colour= "darkorchid2", size = 2) +
+  geom_line(aes(y=Prediction_nlme), colour= "#CC79A7", size = 2) +
   theme(text = element_text(size = 22)) +
   ggtitle("Parity > 3") -> p_4
 
@@ -252,7 +254,7 @@ df_sep |>
   filter(Ani == '1014616772_1')|>
   ggplot(aes(x=DIM, y=logSCC)) +
   geom_point(size=5) +
-  geom_line(aes(y=Prediction_nlme), colour= "red", size = 2) +
+  geom_smooth(aes(y=Prediction_nlme), colour= "#0072B2", size = 2) +
   theme(text = element_text(size = 22))
 ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/Figure_Ani_Good.tiff", width = 40, height = 20, units = "cm", dpi=300)
 
@@ -325,7 +327,7 @@ animal_data |>
 
 # Boxplot, residuals NLME vs DIM
 ggplot(df_sep, aes(x=DIM, y=Residuals_nlme, group=DIM)) +
-  geom_boxplot(outlier.colour = "red", outlier.shape = 0.5, aes(group = cut_width(DIM, 5))) +
+  geom_boxplot(outlier.colour = "#0072B2", outlier.shape = 0.5, aes(group = cut_width(DIM, 5))) +
   labs(y= "Residuals") +
   theme(text = element_text(size = 12))
   # + ggtitle("Residuals per DIM")
@@ -349,3 +351,5 @@ table1_count <- df_sep %>% count(BES_ID, sort = TRUE)
 # Save ----------------------------------------------------------------------------
 
 save.image("K:/woodcurvebox_data/paper/007_modeleval.RData")
+
+load("K:/woodcurvebox_data/paper/007_modeleval.RData")

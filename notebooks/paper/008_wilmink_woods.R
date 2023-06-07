@@ -169,15 +169,17 @@ df_sep |>
   ungroup()->
   animal_data
 
+cbbPalette <- c("#E69F00", "#56B4E9", "#009E73","#CC79A7", "#F0E442", "#0072B2", "#D55E00")
 
 # Boxplot MSQ, catch, here NLS vs NLME
-ggplot(animal_data, aes(x=BES_ID, y=MSQ, fill=Parameter, col=Parameter)) +
+ggplot(animal_data, aes(x=BES_ID, y=MSQ, fill=Parameter)) +
   geom_boxplot() +
   labs(y= "MSR") +
   theme(axis.text = element_text(size = 22),
         axis.title = element_text(size = 22),
         text = element_text(size = 22)) +
-  scale_y_continuous(trans="log10")
+  scale_y_continuous(trans="log10") +
+  scale_fill_manual(values=cbbPalette, name = "Function Style", labels = c("Wilmink", "Wood's"))
 
 ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/Figure_woods_wilmink.tiff", width = 40, height = 30, units = "cm", dpi=300)
 # width = 40, height = 20, units = "cm",
