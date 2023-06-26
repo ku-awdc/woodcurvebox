@@ -6,6 +6,14 @@ This package is not on CRAN right now.
 
 Thus, install it using the following:
 
-```r
+```{r}
+library(remotes)
 remotes::install_github("ku-awdc/woodcurvebox")
+```
+
+or
+
+```{r}
+library(devtools)
+devtools::install_github("ku-awdc/woodcurvebox")
 ```
