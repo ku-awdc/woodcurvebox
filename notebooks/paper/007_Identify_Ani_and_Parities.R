@@ -173,7 +173,7 @@ ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/Figure_Boxplot_all.tiff", width = 
 # non-outlier DYR: 1017255483_1
 # non-outlier: 	1014616772_1
 
-# vosualizing the curves with GGPLOTS LOESS (not rpedicted)
+# vosualizing the curves with GGPLOTS (standard method for observations > 1000=GAM) (not rpedicted)
 df_sep |>
   filter(Ani == '1011699936_1')|>
   identity() %>%
@@ -198,7 +198,8 @@ df_sep |>
   ggplot(aes(x=DIM, y=logSCC)) +
   geom_point(size=5) +
   ylim(-0.01, 9.0) +
-  geom_line(aes(y=Prediction_nlme), colour= "#E69F00", size = 2) +
+  geom_smooth(aes(y=Prediction_nlme), colour= "#E69F00", size = 2, se = FALSE) +
+  geom_hline(yintercept = 5.3, linetype = "dashed", size = 1) +
     theme(text = element_text(size = 22)) +
     ggtitle("Parity 1") -> p_1
 
@@ -208,7 +209,8 @@ df_sep |>
     ggplot(aes(x=DIM, y=logSCC)) +
     geom_point(size=5) +
     ylim(-0.01, 9.0) +
-    geom_line(aes(y=Prediction_nlme), colour= "#56B4E9", size = 2) +
+    geom_smooth(aes(y=Prediction_nlme), colour= "#56B4E9", size = 2, se = FALSE) +
+    geom_hline(yintercept = 5.3, linetype = "dashed", size = 1) +
     theme(text = element_text(size = 22)) +
     ggtitle("Parity 2") -> p_2
 
@@ -218,7 +220,8 @@ df_sep |>
   ggplot(aes(x=DIM, y=logSCC)) +
   geom_point(size=5) +
   ylim(-0.01, 9.0) +
-  geom_line(aes(y=Prediction_nlme), colour= "#009E73", size = 2) +
+  geom_smooth(aes(y=Prediction_nlme), colour= "#009E73", size = 2, se = FALSE) +
+  geom_hline(yintercept = 5.3, linetype = "dashed", size = 1) +
   theme(text = element_text(size = 22)) +
   ggtitle("Parity 3") -> p_3
 
@@ -228,7 +231,8 @@ df_sep |>
   ggplot(aes(x=DIM, y=logSCC)) +
   geom_point(size=5) +
   ylim(-0.01, 9.0) +
-  geom_line(aes(y=Prediction_nlme), colour= "#CC79A7", size = 2) +
+  geom_smooth(aes(y=Prediction_nlme), colour= "#CC79A7", size = 2, se = FALSE) +
+  geom_hline(yintercept = 5.3, linetype = "dashed", size = 1) +
   theme(text = element_text(size = 22)) +
   ggtitle("Parity > 3") -> p_4
 
@@ -237,7 +241,7 @@ ggarrange(p_1, p_2, p_3, p_4,
           ncol=2, nrow=2,
           common.legend = TRUE, legend="right")
 
-ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/Figure_MSR_Anis.tiff", width = 40, height = 20, units = "cm", dpi=300)
+ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/001_Submission/Figure5_highMSR_Animals.tiff", width = 40, height = 20, units = "cm", dpi=300)
 
 
 # plot all - Not working. Need to find the average mean at every DIM
@@ -251,12 +255,12 @@ df_sep |>
 
 # plot a good animal:
 df_sep |>
-  filter(Ani == '1014616772_1')|>
-  ggplot(aes(x=DIM, y=logSCC)) +
-  geom_point(size=5) +
-  geom_smooth(aes(y=Prediction_nlme), colour= "#0072B2", size = 2) +
+  filter(Ani == '1014616772_1') |>
+  ggplot(aes(x = DIM, y = logSCC)) +
+  geom_point(size = 5) +
+  geom_smooth(aes(y = Prediction_nlme), colour = "#0072B2", size = 2, se = FALSE) +
   theme(text = element_text(size = 22))
-ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/Figure_Ani_Good.tiff", width = 40, height = 20, units = "cm", dpi=300)
+ggsave("C:/Users/zjt234/PhD/PaperII_woodcurve/001_Submission/Figure6_lowMSR_Animal.tiff", width = 40, height = 20, units = "cm", dpi=300)
 
 
 
@@ -350,6 +354,6 @@ table1_count <- df_sep %>% count(BES_ID, sort = TRUE)
 
 # Save ----------------------------------------------------------------------------
 
-save.image("K:/woodcurvebox_data/paper/007_modeleval.RData")
+#save.image("K:/woodcurvebox_data/paper/007_modeleval.RData")
 
 load("K:/woodcurvebox_data/paper/007_modeleval.RData")

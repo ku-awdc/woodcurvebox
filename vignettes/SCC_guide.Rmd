@@ -1,13 +1,16 @@
+
 ---
 title: "SCC_guide"
 description: >
   Somatic Cell Count (SCC) curves fitted to modified Milk Curves with nonlinear models.
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{SCC_guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -20,21 +23,22 @@ knitr::opts_chunk$set(
 library(woodcurvebox)
 ```
 
+
+# Somatic Cell Count (SCC) Guide
+
 Somatic Cell Count (SCC) curves for dairy cows are a useful tool for:
 
-  * Surveillance of animal welfare
-  
-  * Supporting treatment decisions
-  
-  * Visualize SCC fluctuations throughout a lactation phase to identify potential masttitis cases.
-  
-  
-A characteristic for the SCC curve is that it's somewhat similar to a reversed Milk curve.
-This means we can fit the SCC observations to modified milk curves, this being the Wood's and Wilmink lactation functions.
+* Surveillance of animal welfare
+* Supporting treatment decisions
+* Visualize SCC fluctuations throughout a lactation phase to identify potential mastitis cases.
+
+A characteristic of the SCC curve is that it's somewhat similar to a reversed Milk curve.
+This means we can fit the SCC observations to modified milk curves, as presented by the Wood's and Wilmink lactation functions.
 
 For fitting, we will use nonlinear models.
 
-We will start by loading following packages for visualization and modelling: 
+We will start by loading the following packages for visualization and modeling:
+
 
 ```{r, message = FALSE}
 library(tidyverse)
@@ -44,160 +48,124 @@ library(nlme)
 
 
 # Models
-Both Wilmink and Wood's can be used to fit SCC.
-Fewer unknown parameters in Wood's, that has 3 compared to the 4 in Wilmink.
+Both Wilmink and Wood's functions can be used to fit SCC. We are using three parameter modified versions
 
-FIX: Update with a three parameter wilmink
 
 ## Wood's function
 
 Nonlog Scale:
-a * DIM ** b * exp(-c * DIM)
+SCC = a * DIM ** b * exp(-c * DIM)
 
 Logscale:
-log(a) + b * log(DIM) + (- c* DIM)
+log(SCC) = log(a) + b * log(DIM) + (-c * DIM)
+
 
 ```{r}
-## FIX: Call function from woodcurvebox instead
 
-f_woods <- function(DIM, a,b,c){
-  a * DIM ** b * exp(-c * DIM)
-}
+source("R/estimate_woods.R")
 
 ```
 
 ## Wilmink function
 
-Logscale:
-a + b * DIM + exp(-(exp(k)) * DIM)*d
+SCC Logscale:
+log(SCC) = a + b * DIM + k * exp(-0.5 * DIM)
 
  
 ```{r}
-## FIX: Call function from woodcurvebox instead. Both 3 and 4 parameter
 
-f_wilmink <- function(DIM, a,b,k,d){
-  a + b * DIM + exp(-(exp(k)) * DIM)*d
-}
+source("R/estimate_wilmink.R")
 
 ```
 
-# Data
 
-Data simulating the SCC observations in a 305 days lactation can be simulated using a modified Wood's function.
-The 3 unknown parameters have been established through various tests (link to paper II when possible).
-Days of milk are set to a length of maximum 305 days, with an interval of 30 days.
+# Data Simulation
+
+Data simulating the SCC observations in a 305-day lactation can be simulated using a modified Wilmink's function. Days of milk are set to a length of maximum 305 days, with an interval of 30 days.
+
 
 ```{r}
 set.seed(20220329)
 
-woodcurvebox:::simulate_woods
+source("R/simulate_data.R")
+
+simulated_woods_df <- simulate_data(10, 5, 0.1, 2, 0.2, 3, 0.3)
 
 ```
 
+## Simulated Data Format
 
-First we create the data frame for individual cows
+The simulated data frame should follow the variable format required by the woodcurvebox functions:
+
+* Unique animal ID: "cowID"
+* Days in Milk (time in lactation): "DIM"
+* Somatic Cell Count on a log scale: "logSCC"
+
+
+# Fitting the Models
+
+## Wood's Style Function
 
 ```{r}
-# FIX : this should be automated as a function
-# FIX: include rnorm variance for each parameter
-gen_cow_ids <- str_c("CKR", 1:10)
-gen_cow_ids %>%
-  map_df(function(cowID) simulate_woods(a = rnorm(1, 5, 0.1), ..., cowID = cowID)) %>%
-  identity() -> simulated_woods_df
-# simulate_woods(cowID = gen_cow_ids) # doesn't work because `simulate_woods`
-# does not vectorize over `cowID`
+
+source("R/estimate_woods.R")
+
+# Fitting with nls_multstart
+f_nls <- estimate_woods(simulated_woods_df)
+
+# Fitting with nlme
+f_nlme <- estimate_woods(simulated_woods_df)
 
 ```
 
-
-## variable format
-
-Names for variables should be according to the woodcurvebox functions, where:
-UNique animal ID : "cowID"
-Days in Milk, time in lactation: "DIM"
-Somatic Cell Count on a log scale: "logSCC"
-
-
-
-# Fitting
-
-## nls multistart
+## Wilmink Style Function
 
 ```{r}
-f_nls <- 
-  nls.multstart::nls_multstart(
-  logSCC ~ a * (DIM**b) * exp(-c * DIM),
-  data = simulated_woods_df,
-  lower=c(a=0, b=0, k=-5, d=0), 
-  upper=c(a=9, b=1.5, k=0, d=5),
-  start_lower = c(a=0, b=0, k=-5, d=0),
-  start_upper = c(a=8, b=1, k=-0.01, d=4),
-  iter = 500,
-  supp_errors = "Y")
+
+source("R/estimate_wilmink.R")
+
+# Fitting with nls_multstart
+f_wilmink <- estimate_wilmink(simulated_woods_df)
+
+# Fitting with nlme
+f_wilmink <- estimate_wilmink(simulated_woods_df)
 
 ```
 
 
-## nlme 
+# Visualizing SCC curves
+
+## SCC Curve - Wood's Style
 
 ```{r}
-f_nlme <-
-  nlme::nlme(
-  #scc ~ a * (DIM**b) * exp(-c * DIM),
-  logSCC ~ f_woods(DIM, a, b, c),
-  data = data,
-  fixed = a + b + c ~ 1,
-  random = a + b + c ~ 1,
-  # groups = ~cowID,
-  # groups = ~herdID,
-  start = c(
-    a = 150,
-    b = -0.1,
-    c = 0.003
-  ),
-  # na.action = na.exclude,
-  control = list(returnObject = TRUE)
-)
+library(ggplot2)
+
+# Plotting Wood's SCC curve
+plot_woods <- ggplot(simulated_woods_df, aes(x = DIM, y = logSCC)) +
+  geom_point() +
+  geom_line(data = simulated_woods_df, aes(x = DIM, y = fitted(f_nls)), color = "blue", linetype = "dashed") +
+  geom_line(data = simulated_woods_df, aes(x = DIM, y = fitted(f_nlme)), color = "red", linetype = "dashed") +
+  labs(x = "Days in Milk (DIM)", y = "Log SCC") +
+  ggtitle("SCC Curve - Wood's Style") +
+  theme_minimal()
+
+print(plot_woods)
+
 ```
 
-# Comparing the models
-
-## Parameters
-
-nls vs nlme.
-woods vs wilmink.
-
-GAM ?
-
-Compare the fit with density plot.
-
-Assess the models with ?
-
-
-
-
-## Fit
-
-Prediciton curves for each model
-
-
-
-# Additional - fitting on herd level
-
-We include a herd variable, and create noise specific for each herd.
-
-We are adding a herd ID to the data, including noise (epsilon_herd) specific to each herd
+## SCC Curve - Wilmink Style
 
 ```{r}
-simulated_woods_df %>%
-  dplyr::mutate(herdID = dplyr::if_else(str_detect(cowID, "[1-8]{1,1}$"), "A", "B")) %>%
-  dplyr::group_by(herdID) %>%
-  # mutate(epsilon_herd = rnorm(n = 1, mean = 0, sd = sd_herd)) %>%
-  dplyr::mutate(epsilon_herd = rnorm(n = 1, mean = 0, sd = 2)) %>%
-  dplyr::ungroup()
+# Plotting Wilmink SCC curve
+plot_wilmink <- ggplot(simulated_woods_df, aes(x = DIM, y = logSCC)) +
+  geom_point() +
+  geom_line(data = simulated_woods_df, aes(x = DIM, y = fitted(f_wilmink)), color = "green", linetype = "dashed") +
+  labs(x = "Days in Milk (DIM)", y = "Log SCC") +
+  ggtitle("SCC Curve - Wilmink Style") +
+  theme_minimal()
+
+print(plot_wilmink)
 
 ```
 
-## Fitting on herd level
 
-nlme example on herd level
