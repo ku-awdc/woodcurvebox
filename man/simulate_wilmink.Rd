@@ -2,26 +2,32 @@
 % Please edit documentation in R/simulate_wilmink.R
 \name{simulate_wilmink}
 \alias{simulate_wilmink}
-\title{Simulate data from a wilmink curve}
+\title{Simulate data from a Wilmink curve}
 \usage{
-simulate_wilmink(herd, animals, interval, a, b, k, d, resid)
+simulate_wilmink(herd, animals, interval, loga, b, k, d, resid)
 }
 \arguments{
-\item{a}{desc}
+\item{herd}{herd identifier}
 
-\item{b}{desc}
+\item{animals}{number of animals in the herd}
 
-\item{k}{desc}
+\item{interval}{interval between observations in days}
 
-\item{d}{desc}
+\item{loga}{parameter 'a' in the Wilmink curve (log-scale)}
 
-\item{dim}{which DIM do we want?}
+\item{b}{parameter 'b' in the Wilmink curve}
+
+\item{k}{parameter 'k' in the Wilmink curve}
+
+\item{d}{parameter 'd' in the Wilmink curve}
+
+\item{resid}{standard deviation of the random residuals}
 }
 \value{
-simulated data on herd level with an interval of 28 DIM between osbervations
+simulated data on herd level with an interval of 28 DIM between observations
 }
 \description{
-Simulate data from a wilmink curve
+Simulate data from a Wilmink curve
 }
 \examples{
 data <- simulate_wilmink()

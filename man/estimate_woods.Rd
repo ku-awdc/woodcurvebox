@@ -19,9 +19,9 @@ estimate_woods(data)
 
 # Multiple animals:
 library(tidyverse)
-data <- lapply(1:5, function(x) simulate_woods(cowID=x)) \%>\% bind_rows()
+data <- lapply(1:5, function(x) simulate_woods(cowID = x)) \%>\% bind_rows()
 estimate_woods(data)
 
-FIX: Update model to run one herd, with single cowIDs based on script 013 i notebooks
+FIX: Update model to run one herd, with single cowIDs based on script 013 in notebooks
 
 }
