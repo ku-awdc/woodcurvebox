@@ -27,7 +27,7 @@ estimate_woods <- function(data) {
 
   stopifnot(is.data.frame(data), all(c("cowID", "DIM", "logSCC") %in% names(data)))
 
-  nls_multistart_woods <- nls_multistart(
+  nls_multistart_woods <- nls.multstart(
     logSCC ~ f_woods(DIM, loga, b, k),
     data = data,
     start_lower = c(loga = -100, b = -100, k = -100),
