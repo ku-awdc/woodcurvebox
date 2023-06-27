@@ -12,14 +12,10 @@
 #'
 #' @export
 simulate_woods <- function(a = 5, b = 0.01, c = 0.001, dim = seq(30,300,by=30), cowID = "CKR_1"){
-
-  # FIX start param. Check: a = 150, b = -0.1, c = -0.003
-
   stopifnot(length(a)==1, length(b)==1, length(c)==1, length(cowID)==1)
   stopifnot(all(dim > 0), all(dim < 305))
 
-  scc <- a * dim ** b * exp(-c * dim) + rnorm(length(dim), mean = 0, sd = sd)
+  scc <- a * dim ** b * exp(-c * dim)
 
   return(data.frame(cowID = cowID, dim=dim, logSCC = scc))
-
 }
