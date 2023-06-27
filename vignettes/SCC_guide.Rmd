@@ -96,10 +96,10 @@ The simulated data frame should follow the variable format required by the woodc
 
 ```{r}
 # Fitting with nls_multstart
-f_nls <- estimate_woods(simulated_woods_df)
+f_woods_nls <- estimate_woods(simulated_woods_df)
 
 # Fitting with nlme
-f_nlme <- estimate_woods(simulated_woods_df)
+f_woods_nlme <- estimate_woods(simulated_woods_df)
 
 ```
 

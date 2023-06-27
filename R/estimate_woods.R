@@ -19,18 +19,11 @@
 #' FIX: Update model to run one herd, with single cowIDs based on script 013 in notebooks
 #'
 #' @export
-estimate_woods <- function(data, logscale = FALSE) {
+estimate_woods <- function(data) {
 
-  if (logscale) {
-    warning("Log function may need modification")
-    f_woods <- function(DIM, a, b, c) {
-      log(a) + b * log(DIM) + (-c * DIM)
-    }
-  } else {
     f_woods <- function(DIM, loga, b, k) {
       loga + b * log(DIM) + (-k * DIM)
     }
-  }
 
   stopifnot(is.data.frame(data), all(c("cowID", "DIM", "logSCC") %in% names(data)))
 
