@@ -21,13 +21,13 @@
 #' @export
 estimate_woods <- function(data) {
 
-    f_woods <- function(DIM, loga, b, k) {
-      loga + b * log(DIM) + (-k * DIM)
-    }
+  f_woods <- function(DIM, loga, b, k) {
+    loga + b * log(DIM) + (-k * DIM)
+  }
 
   stopifnot(is.data.frame(data), all(c("cowID", "DIM", "logSCC") %in% names(data)))
 
-  nls_multistart_woods <- nls_multstart(
+  nls_multistart_woods <- nls_multistart(
     logSCC ~ f_woods(DIM, loga, b, k),
     data = data,
     start_lower = c(loga = -100, b = -100, k = -100),
@@ -43,6 +43,8 @@ estimate_woods <- function(data) {
 
   nls_start_woods <- coef(nls_multistart_woods) %>%
     as_tibble()
+
+  print("Before nlme function")
 
   nlme_woods <- nlme(
     logSCC ~ f_woods(DIM, loga, b, k),

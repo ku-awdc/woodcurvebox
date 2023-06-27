@@ -73,9 +73,12 @@ Data simulating the SCC observations in a 305-day lactation can be simulated usi
 
 ```{r}
 set.seed(20220329)
+
+
 simulated_woods_df <- simulate_data(10, 5, 0.1, 2, 0.2, 3, 0.3)
 
 # Estimate parameters
+source("C:/Users/zjt234/PhD/R_Github/woodcurvebox/R/estimate_woods.R")
 estimated_params <- estimate_woods(data = simulated_woods_df)
 
 
