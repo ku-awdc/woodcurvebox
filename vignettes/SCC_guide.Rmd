@@ -60,23 +60,10 @@ Logscale:
 log(SCC) = log(a) + b * log(DIM) + (-c * DIM)
 
 
-```{r}
-
-source("R/estimate_woods.R")
-
-```
-
 ## Wilmink function
 
 SCC Logscale:
 log(SCC) = a + b * DIM + k * exp(-0.5 * DIM)
-
- 
-```{r}
-
-source("R/estimate_wilmink.R")
-
-```
 
 
 # Data Simulation
@@ -86,9 +73,6 @@ Data simulating the SCC observations in a 305-day lactation can be simulated usi
 
 ```{r}
 set.seed(20220329)
-
-source("R/simulate_data.R")
-
 simulated_woods_df <- simulate_data(10, 5, 0.1, 2, 0.2, 3, 0.3)
 
 ```
@@ -107,9 +91,6 @@ The simulated data frame should follow the variable format required by the woodc
 ## Wood's Style Function
 
 ```{r}
-
-source("R/estimate_woods.R")
-
 # Fitting with nls_multstart
 f_nls <- estimate_woods(simulated_woods_df)
 
@@ -121,9 +102,6 @@ f_nlme <- estimate_woods(simulated_woods_df)
 ## Wilmink Style Function
 
 ```{r}
-
-source("R/estimate_wilmink.R")
-
 # Fitting with nls_multstart
 f_wilmink <- estimate_wilmink(simulated_woods_df)
 
