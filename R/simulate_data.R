@@ -10,6 +10,7 @@
 #' @return A data frame with simulated SCC data for cows
 #' @examples
 #' simulate_data(10, 5, 0.1, 2, 0.2, 3, 0.3)
+#' @export
 simulate_data <- function(n_cows, a_mean, a_sd, b_mean, b_sd, c_mean, c_sd) {
 
   #library(tidyverse)
