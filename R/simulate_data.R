@@ -11,7 +11,9 @@
 #' @examples
 #' simulate_data(10, 5, 0.1, 2, 0.2, 3, 0.3)
 simulate_data <- function(n_cows, a_mean, a_sd, b_mean, b_sd, c_mean, c_sd) {
-  library(tidyverse)
+
+  #library(tidyverse)
+  #library(woodcurvebox)
 
   gen_cow_ids <- str_c("CKR", 1:n_cows)
 
