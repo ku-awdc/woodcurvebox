@@ -78,12 +78,15 @@ set.seed(20220329)
 simulated_woods_df <- simulate_data(10, 5, 0.1, 2, 0.2, 3, 0.3)
 
 # Estimate parameters
-source("/R/estimate_woods.R") # FIX debug. Cannot source estimate_woods
-# source("C:/Users/zjt234/PhD/R_Github/woodcurvebox/R/estimate_woods.R") # this workds
+#source("/R/estimate_woods.R") # FIX debug. Cannot source estimate_woods
+source("C:/Users/zjt234/PhD/R_Github/woodcurvebox/R/estimate_woods.R") # this workds
 
 # FIX: error below: could not find function "nls.multstart" (library is loaded ?)
-estimated_params <- estimate_woods(data = simulated_woods_df) # FIX
-
+estimated_params <- estimate_woods(data = simulated_woods_df) 
+# FIX first need to reload nls.multstart
+# FIX then need to reload nlmw
+# FIX then following error: 
+#           Error in f_woods(DIM, loga, b, k) : could not find function "f_woods"
 
 ```
 
