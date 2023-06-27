@@ -14,14 +14,14 @@ Title
 }
 \examples{
 # One animal:
-data <- simulate_woods(5, 0.01, 0.001)
+data <- simulate_wilmink(5, 0.01, 0.001)
 estimate_wilmink(data)
 
 # Multiple animals:
 library(tidyverse)
-data <- lapply(1:5, function(x) simulate_woods(cowID=x)) \%>\% bind_rows()
+data <- lapply(1:5, function(x) simulate_wilmink(cowID=x)) \%>\% bind_rows()
 estimate_wilmink(data)
 
-FIX: Update model to run one herd, with single cowIDs based on script 013 i notebooks
+FIX: Update model to run one herd, with single cowIDs based on script 013 in notebooks
 
 }

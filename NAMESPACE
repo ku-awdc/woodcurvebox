@@ -3,6 +3,5 @@
 export(estimate_wilmink)
 export(estimate_woods)
 export(simulate_wilmink)
-export(simulate_woods)
 importFrom(nlme,nlme)
 importFrom(nls.multstart,nls_multstart)
