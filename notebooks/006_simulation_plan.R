@@ -80,6 +80,80 @@ infection_process_df <-
 infection_process_df
 #'
 #'
+find_mastititis_shapes <- function(par = c(1,1)) {
+  stopifnot(
+    "only provide one pair of parameters (shape, scale)" = length(par) == 2)
+
+  optim(par = par,
+        function(x) {
+
+          if (any(x < 0)) {
+            return (Inf)
+          }
+
+          shape <- x[1]
+          scale <- x[2]
+          # replace shape by constrain that the mode is at 5 (i.e. `target_mode`)
+          better_shape <- 5 / scale + 1
+
+          # multiplication to bring the terms into the same level
+
+          # cat(paste(shape, scale, collapse = ", "), sep = "\n")
+          tail_end_weight <-
+            pgamma(21, shape = shape, scale = scale,
+                   lower.tail = FALSE)
+          # cat(glue("skewniss {value}", value = pmax(0, log(shape / better_shape))),
+          #     sep = "\n")
+
+          # tail_end_weight +
+          atan(tail_end_weight) * scale +
+            2*pi * atan(abs(better_shape - shape)) / scale
+        }) %>%
+    `[[`("par") ->
+    mastitis_shape_par
+  shape <- mastitis_shape_par[1]
+  scale <- mastitis_shape_par[2]
+  list(shape = shape, scale = scale,
+       mode = (shape - 1)*scale)
+}
+
+
+mastitis_scc_inflation_parameters <-
+  find_mastititis_shapes(c(1,1))
+
+
+mastitis_shape <- function(
+    severity_scale,
+    n = 100,
+    x = NULL,
+    mastitis_shape_par = mastitis_shape_par) {
+  # assume `x` is within 0 and 21
+  stopifnot(
+    "`x` is between `c(0, 21)` days" = 0 <= x & x <= 21,
+    "`n` should be positive integer" = n > 0
+  )
+
+  x <- if (is.null(x)) {
+    seq.default(0, 21, length.out = n)
+  } else {
+    x
+  }
+
+  shape <- mastitis_shape_par$shape
+  scale <- mastitis_shape_par$scale
+  # ensures that the mode at 5 is 1.
+  shape_value <- dgamma(x, shape = shape, scale = scale) /
+    dgamma(5, shape = shape, scale = scale)
+
+  list(
+    # severity_scale = severity_scale,
+    x = x,
+    # mastitis_shape = shape_value,
+    y = (1 - severity_scale) * 40 * shape_value +
+      severity_scale * 200 * shape_value
+  )
+}
+
 infection_process_df <-
   infection_process_df %>%
   mutate(
@@ -118,6 +192,25 @@ infection_process_df <- infection_process_df %>%
   )
 #' Next we need a way to apply the shifting using
 #' `shift_extend_inflation_scc`
+
+shift_extend_inflation_scc <- function(x, shift_by,
+                                      total_length = 305, fill = 0) {
+  #TODO: make this work with `shift_by` negative.
+
+  stopifnot(
+    "`shift_by` must be non-negative integer" =
+      shift_by >= 0 &
+      all.equal.numeric(
+        abs(shift_by - trunc(shift_by)), 0
+      )
+  )
+  c(
+    rep.int(fill, pmin(shift_by, total_length)),
+    x[seq_len(pmin(length(x), pmax(0, total_length - shift_by)))],
+    rep.int(fill, times = pmax(total_length -
+                                 length(x) - shift_by, 0))
+  )
+}
 
 infection_process_df <-
   infection_process_df %>%
@@ -165,6 +258,23 @@ infection_process_df %>%
 #' But first, we have to adjust the values of the Wood's curve so that they
 #' reflect the values of `SCC` or `log(SCC)`.
 #'
+#'
+
+tibble(lactation = "first",
+       a = 13.546, b = 19.575 / 1e2, c = 3.388 / 1e3) %>%
+  add_row(lactation = "second",
+          a = 18.820, b = 23.576 / 1e2, c = 5.441 / 1e3) %>%
+  add_row(lactation = "third and more",
+          a = 15.956, b = 30.004 / 1e2, c = 6.067 / 1e3) %>%
+  mutate(lactation = fct_inorder(lactation)) ->
+  milk_curves
+
+daily_lactation_f <- function(n, a, b, c) {
+  a * n ** b * exp(-c * n)
+}
+daily_lactation_f <- Vectorize(daily_lactation_f,
+                               vectorize.args = c("a", "b", "c"))
+
 milk_curves %>%
   #' only consider 1st lactation
   slice(1) %>%
@@ -230,6 +340,9 @@ scc_avg_herd_parameters
 #'
 #'
 #'
+peak_location <- function(a,b,c) {
+  b/c
+}
 scc_avg_herd_parameters %>%
   exec(peak_location, !!!.)
 #'
@@ -268,6 +381,51 @@ herd_with_average_cow_parameters <-
 #' may not hold true.
 #'
 #'
+sample_scc_curves <- function(parameters_df, herd_size) {
+  #' Generate individual cow parameters from the first lactation:
+  parameters_df %>%
+    mutate(herd_size = herd_size) %>%
+    identity() %>% {
+      bind_cols(
+        rename(., herd_a = a, herd_b = b, herd_c = c),
+        tibble(
+          a = truncnorm::rtruncnorm(.$herd_size,
+                                    # a = 0,
+                                    # b = 0,
+                                    mean = .$a,
+                                    sd = 25),
+          b = truncnorm::rtruncnorm(
+            .$herd_size,
+            # a = 0,
+            # a = 0.01,
+            a = -1, # otherwise the curve is not integrable.
+            b = 0,
+            mean = .$b,
+            sd = 0.0001
+            # sd = 0.1
+            # sd = 0.04
+            # sd = 0.2
+          ),
+          c = truncnorm::rtruncnorm(
+            .$herd_size,
+            # a = .$c,
+            # a = -1,
+            b = 0,
+            mean = .$c,
+            sd = 0.00001
+            # sd = 0.0001
+            # sd = 0.005
+          )
+        ) %>%
+          rename_with(~str_c("cow_", .x)) %>%
+          rowid_to_column("cow_id") %>%
+          mutate(cow_id = as.character(cow_id) %>%
+                   # mutate(cow_id = str_c("cow_", cow_id) %>%
+                   fct_inorder())
+      )
+    } %>%
+    return()
+}
 
 herd_with_average_cow_parameters %>%
   sample_scc_curves(herd_size = herd_size) ->
@@ -651,3 +809,29 @@ full_fitted_herd_error_df %>%
 #'
 full_fitted_herd_df %>%
   glimpse()
+#'
+#'
+#' Single plot:
+filtered_data <- full_fitted_herd_df %>%
+  pivot_longer(starts_with("error"),
+               names_sep = "_",
+               names_to = c(NA, "error_label"),
+               values_to = "error_value"
+  ) %>%
+  mutate(error_label = fct_inorder(error_label)) %>%
+  group_by(is_infected, error_label) %>%
+  slice_max(error_value, n = 50) %>%
+  glimpse() %>%
+  mutate(DIM = x.x) %>%
+  unnest(c(DIM, y, y_est)) %>%
+  pivot_longer(c(y, y_est)) %>%
+  identity()
+
+ggplot(filtered_data, aes(DIM, value, group = interaction(cow_id, name), color = name)) +
+  geom_line() +
+  labs(x = "Days in Milk [day]", y = "SCC [k]") +
+  theme_bw() +
+  theme(text = element_text(size = 22)) +
+  theme(legend.position = "none")
+ggsave("C:/Users/zjt234/PhD/Thesis/figures/sim_infections_Mossa.tiff", width = 40, height = 20, units = "cm", dpi=300)
+

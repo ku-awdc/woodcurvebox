@@ -1,6 +1,7 @@
 
 
 set.seed(20220404)
+library(tidyverse)
 
 ### Simulate single animals with Wood: --------------------
 
@@ -14,7 +15,28 @@ set.seed(20220404)
 
 
 ### Simulate herd with wilmink: --------------------
+simulate_wilmink <- function(herd, animals, interval, loga, b, k, d, resid) {
+  obs <- ceiling(305 / interval)
+  tibble(
+    herd = rep(herd, animals),
+    animal = 1:animals,
+    dim = sample(5:(5 + interval), animals, TRUE)
+  ) |>
+    group_by(herd, animal) |>
+    summarise(
+      dim = seq(dim, dim + (interval * obs), by = interval),
+      obsnr = (0:obs) + 1,
+      .groups = "drop"
+    ) |>
+    filter(dim <= 305) |>
+    mutate(mean = daily_lactation(dim, loga, b, k, d)) |>
+    mutate(logSCC = rnorm(n(), mean, resid))
+}
 
+daily_lactation <- function(dim, loga, b, k, d) {
+  a <- exp(loga)
+  a + b * dim + k * exp(-d * dim)
+}
 
 
 # including 3 herds in the data each with different a,b,k,d parameters.

@@ -87,3 +87,4 @@ find_mastititis_shapes <- function(par = c(1,1)) {
   list(shape = shape, scale = scale,
        mode = (shape - 1)*scale)
 }
+

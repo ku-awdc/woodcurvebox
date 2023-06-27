@@ -1,5 +1,5 @@
 
-source("../asf_phd/R/eda_startup.r")
+source("notebooks/eda_startup.r")
 devtools::load_all()
 
 #'
