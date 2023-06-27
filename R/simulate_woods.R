@@ -17,5 +17,8 @@ simulate_woods <- function(a = 5, b = 0.01, c = 0.001, dim = seq(30,300,by=30), 
 
   scc <- a * dim ** b * exp(-c * dim)
 
-  return(data.frame(cowID = cowID, dim=dim, logSCC = scc))
+  return(data.frame(cowID = cowID, DIM = dim, logSCC = scc))
 }
+
+
+
