@@ -1,5 +1,5 @@
 
-# Under maintainance
+# Under maintenance
 
 ## We are currently updating our somatic cell count funtions, ensuring a better model fit
 ## Please stop by again soon
